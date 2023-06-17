@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 const descr = {
   name: 'The name of this person',
@@ -19,34 +20,45 @@ const descr = {
   edited: 'the ISO 8601 date format of the time that this resource was edited.',
 }
 
+@Entity()
 export class People {
+  @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'People id', nullable: true })
   _id?: number
 
+  @Column()
   @ApiProperty({ description: descr.name, nullable: true })
   name: string
 
+  @Column()
   @ApiProperty({ description: descr.height, nullable: true })
   height: number
 
+  @Column()
   @ApiProperty({ description: descr.mass, nullable: true })
   mass: number
 
+  @Column()
   @ApiProperty({ description: descr.hair_color, nullable: true })
   hair_color: string
 
+  @Column()
   @ApiProperty({ description: descr.skin_color, nullable: true })
   skin_color: string
 
+  @Column()
   @ApiProperty({ description: descr.eye_color, nullable: true })
   eye_color: string
 
+  @Column()
   @ApiProperty({ description: descr.birth_year, nullable: true })
   birth_year: string
 
+  @Column()
   @ApiProperty({ description: descr.gender, nullable: true })
   gender: string
 
+  @Column()
   @ApiProperty({ description: descr.homeworld, nullable: true })
   homeworld: string
 
