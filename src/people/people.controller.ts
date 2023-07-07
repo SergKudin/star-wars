@@ -1,18 +1,28 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport'
 import { CreatePeopleDto } from './dto/create-people.dto';
 import { UpdatePeopleDto } from './dto/upate-people.dto';
 import { PeopleService } from './people.service';
-import { People } from './entities/people.entity';
+import { People1 } from './entities/people1.entity';
 
-@ApiTags('people')
+@ApiTags('People')
 // @ApiSecurity("X-API-KEY", ["X-API-KEY"]) 
 // // <----- Авторизация через Swagger 
 @Controller('people')
 export class PeopleController {
 
   constructor(private readonly peopleService: PeopleService) { }
+
+  // @UseGuards(AuthGuard("api-key"))
+  @ApiOperation({ summary: "Create a People" })
+  @ApiResponse({ status: HttpStatus.CREATED, description: "Success", type: CreatePeopleDto })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  @Post()
+  create(@Body() createPeopleDto: CreatePeopleDto): CreatePeopleDto {
+    return this.peopleService.create(createPeopleDto)
+  }
 
   @Get()
   // @UseGuards(AuthGuard("api-key"))
@@ -25,14 +35,14 @@ export class PeopleController {
   // // name: Имя параметра запроса. В данном случае, "userId".
   // // required: Указывает, является ли параметр обязательным (true/false).
   // // description: Описание параметра запроса. В данном случае, "User identifier".
-  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: People, isArray: true })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePeopleDto, isArray: true })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   // status: HTTP-статус код ответа.
   // description: Описание ответа.
   // type: Тип данных, используемый в ответе.
   // isArray: Указывает, является ли ответ массивом (true/false).
-  getAll(): People[] {
+  getAll(): CreatePeopleDto[] {
     return this.peopleService.getAll()
   }
 
@@ -42,11 +52,11 @@ export class PeopleController {
   // name: Имя параметра запроса. В данном случае, "id".
   // required: Указывает, является ли параметр обязательным (true/false).
   // description: Описание параметра запроса. В данном случае, "People identifier".
-  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: People })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePeopleDto })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @Get(':id')
-  getById(@Param('id', ParseIntPipe) id: number): People {
+  getById(@Param('id', ParseIntPipe) id: number): CreatePeopleDto {
     return this.peopleService.getById(id)
   }
 
@@ -56,22 +66,23 @@ export class PeopleController {
   // name: Имя параметра запроса. В данном случае, "id".
   // required: Указывает, является ли параметр обязательным (true/false).
   // description: Описание параметра запроса. В данном случае, "People identifier".
-  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: People })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePeopleDto })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @Get('page/:page')
-  getAllWithPagination(@Param('page', ParseIntPipe) page: number): People[] {
+  getAllWithPagination(@Param('page', ParseIntPipe) page: number): CreatePeopleDto[] {
     return this.peopleService.getAllWithPagination(page, +process.env.PAGE_LIMIT)
   }
 
   // @UseGuards(AuthGuard("api-key"))
-  @ApiOperation({ summary: "Create a People" })
-  @ApiResponse({ status: HttpStatus.CREATED, description: "Success", type: People })
+  @ApiOperation({ summary: "Updates a People with specified id" })
+  @ApiParam({ name: "id", required: true, description: "People identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: UpdatePeopleDto })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  @Post()
-  create(@Body() createPeopleDto: CreatePeopleDto): People {
-    return this.peopleService.create(createPeopleDto)
+  @Patch(':id')
+  update(@Body() updatePeopleDto: UpdatePeopleDto, @Param('id', ParseIntPipe) id: number): UpdatePeopleDto {
+    return this.peopleService.update(id, updatePeopleDto)
   }
 
   // @UseGuards(AuthGuard("api-key"))
@@ -83,16 +94,5 @@ export class PeopleController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.peopleService.remove(id)
-  }
-
-  // @UseGuards(AuthGuard("api-key"))
-  @ApiOperation({ summary: "Updates a People with specified id" })
-  @ApiParam({ name: "id", required: true, description: "People identifier" })
-  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: People })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
-  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  @Put(':id')
-  update(@Body() updatePeopleDto: UpdatePeopleDto, @Param('id', ParseIntPipe) id: number): People {
-    return this.peopleService.update(id, updatePeopleDto)
   }
 }

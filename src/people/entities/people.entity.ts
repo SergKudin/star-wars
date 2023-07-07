@@ -1,126 +1,85 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
-
-const descr = {
-  name: 'The name of this person',
-  birth_year: 'The birth year of the person, using the in-universe standard of BBY or ABY - Before the Battle of Yavin or After the Battle of Yavin.The Battle of Yavin is a battle that occurs at the end of Star Wars episode IV: A New Hope.',
-  eye_color: 'The eye color of this person.Will be unknown if not known or n / a if the person does not have an eye.',
-  gender: 'The gender of this person.Either Male, Female or unknown, n / a if the person does not have a gender.',
-  hair_color: 'The hair color of this person.Will be unknown if not known or n / a if the person does not have hair.',
-  height: 'The height of the person in centimeters.',
-  mass: 'The mass of the person in kilograms.',
-  skin_color: 'The skin color of this person.',
-  homeworld: 'The URL of a planet resource, a planet that this person was born on or inhabits.',
-  films: 'An array of film resource URLs that this person has been in.',
-  species: 'An array of species resource URLs that this person belongs to.',
-  starships: 'An array of starship resource URLs that this person has piloted.',
-  vehicles: 'An array of vehicle resource URLs that this person has piloted.',
-  url: 'the hypermedia URL of this resource.',
-  created: 'the ISO 8601 date format of the time that this resource was created.',
-  edited: 'the ISO 8601 date format of the time that this resource was edited.',
-}
+import { Films } from "src/films/entities/film.entity"
+import { Planet } from "src/planets/entities/planet.entity"
+import { Species } from "src/species/entities/species.entity"
+import { Starships } from "src/starships/entities/starship.entity"
+import { Vehicles } from "src/vehicles/entities/vehicle.entity"
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
 @Entity()
 export class People {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'People id', nullable: true })
-  _id?: number
+  _id: number
 
   @Column()
-  @ApiProperty({ description: descr.name, nullable: true })
+  @ApiProperty({ description: 'The name of this person', nullable: true })
   name: string
 
   @Column()
-  @ApiProperty({ description: descr.height, nullable: true })
-  height: number
-
-  @Column()
-  @ApiProperty({ description: descr.mass, nullable: true })
-  mass: number
-
-  @Column()
-  @ApiProperty({ description: descr.hair_color, nullable: true })
-  hair_color: string
-
-  @Column()
-  @ApiProperty({ description: descr.skin_color, nullable: true })
-  skin_color: string
-
-  @Column()
-  @ApiProperty({ description: descr.eye_color, nullable: true })
-  eye_color: string
-
-  @Column()
-  @ApiProperty({ description: descr.birth_year, nullable: true })
+  @ApiProperty({ description: 'The birth year of the person, using the in-universe standard of BBY or ABY - Before the Battle of Yavin or After the Battle of Yavin.The Battle of Yavin is a battle that occurs at the end of Star Wars episode IV: A New Hope.', nullable: true })
   birth_year: string
 
   @Column()
-  @ApiProperty({ description: descr.gender, nullable: true })
+  @ApiProperty({ description: 'The eye color of this person.Will be unknown if not known or n / a if the person does not have an eye.', nullable: true })
+  eye_color: string
+
+  @Column()
+  @ApiProperty({ description: 'The gender of this person.Either Male, Female or unknown, n / a if the person does not have a gender.', nullable: true })
   gender: string
 
   @Column()
-  @ApiProperty({ description: descr.homeworld, nullable: true })
-  homeworld: string
+  @ApiProperty({ description: 'The hair color of this person.Will be unknown if not known or n / a if the person does not have hair.', nullable: true })
+  hair_color: string
 
-  @ApiProperty({ description: descr.films, nullable: true })
-  films: string[]
+  @Column()
+  @ApiProperty({ description: 'The height of the person in centimeters.', nullable: true })
+  height: number
 
-  @ApiProperty({ description: descr.species, nullable: true })
-  species: string[]
+  @Column()
+  @ApiProperty({ description: 'The mass of the person in kilograms.', nullable: true })
+  mass: number
 
-  @ApiProperty({ description: descr.vehicles, nullable: true })
-  vehicles: string[]
+  @Column()
+  @ApiProperty({ description: 'The skin color of this person.', nullable: true })
+  skin_color: string
 
-  @ApiProperty({ description: descr.starships, nullable: true })
-  starships: string[]
+  @ManyToOne(() => Planet, (planet) => planet.residents)
+  @JoinColumn({ name: 'planet_id' })
+  @ApiProperty({ description: 'A planet that this person was born on or inhabits.', nullable: true })
+  homeworld: Planet
 
-  @ApiProperty({ description: descr.created, nullable: true })
-  created: string[]
+  @ManyToMany(() => Films, (film) => film.characters)
+  @JoinTable()
+  @ApiProperty({ description: ' An array of film that this person has been in.', nullable: true })
+  films: Films[]
 
-  @ApiProperty({ description: descr.edited, nullable: true })
-  edited: string[]
+  @ManyToMany(() => Species, (species) => species.people)
+  @JoinTable()
+  @ApiProperty({ description: 'An array of species that this person belongs to.', nullable: true })
+  species: Species[]
 
-  @ApiProperty({ description: descr.url, nullable: true })
-  url: string[]
+  @ManyToMany(() => Starships, (starships) => starships.pilots)
+  @JoinTable()
+  @ApiProperty({ description: 'An array of starship that this person has piloted.', nullable: true })
+  starships: Starships[]
 
-  constructor(
-    name: string,
-    height: number,
-    mass: number,
-    hair_color: string,
-    skin_color: string,
-    eye_color: string,
-    birth_year: string,
-    gender: string,
-    homeworld: string,
-    films: string[],
-    species: string[],
-    vehicles: string[],
-    starships: string[],
-    created: string[],
-    edited: string[],
-    url: string[],
-    _id?: number,
-  ) {
-    this.name = name
-    this.height = height
-    this.mass = mass
-    this.hair_color = hair_color
-    this.skin_color = skin_color
-    this.eye_color = eye_color
-    this.birth_year = birth_year
-    this.gender = gender
-    this.homeworld = homeworld
-    this.films = films
-    this.species = species
-    this.vehicles = vehicles
-    this.starships = starships
-    this.created = created
-    this.edited = edited
-    this.url = url
-    if (_id !== undefined) {
-      this._id = _id
-    }
-  }
+  @ManyToMany(() => Vehicles, (vehicles) => vehicles.pilots)
+  @JoinTable()
+  @ApiProperty({ description: 'An array of vehicle that this person has piloted.', nullable: true })
+  vehicles: Vehicles[]
+
+  @Column() // @Column({nullable: true})
+  @ApiProperty({ description: 'The URL of this resource', nullable: true })
+  url: string;
+
+  @CreateDateColumn()
+  @ApiProperty({ description: 'Record creation date', nullable: true })
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  @ApiProperty({ description: 'Record update date', nullable: true })
+  updatedAt: Date;
+
 }
 

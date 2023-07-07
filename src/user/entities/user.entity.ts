@@ -1,15 +1,30 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity() // Декоратор, указывающий, что это сущность
+@Entity()
 export class User {
-  @PrimaryGeneratedColumn() // Декоратор, указывающий, что это первичный ключ, генерируемый автоматически
+  @PrimaryGeneratedColumn()
+  @ApiProperty({ description: 'User id', nullable: true })
   id: number;
 
-  @Column() // Декоратор, указывающий, что это колонка в таблице
-  name: string;
+  // @Column()
+  // @ApiProperty({ description: 'User name', nullable: true })
+  // name: string;
 
   @Column()
+  @ApiProperty({ description: 'User email', nullable: true })
   email: string;
 
-  // Другие поля и методы сущности
+  @Column()
+  @ApiProperty({ description: 'User password', nullable: true })
+  password: string;
+
+  @CreateDateColumn()
+  @ApiProperty({ description: 'Date User created', nullable: true })
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  @ApiProperty({ description: 'Date User updated', nullable: true })
+  updatedAt: Date;
+
 }
