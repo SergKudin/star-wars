@@ -61,12 +61,12 @@ export class Starships {
   @ApiProperty({ description: 'The maximum period of consumables supply for the starship without needing to resupply', nullable: true })
   consumables: string;
 
-  @ManyToMany(() => Films, (film) => film.starships)
+  @ManyToMany((type) => Films, (film) => film.starships)
   @JoinTable()
   @ApiProperty({ description: 'An array of Film that this starship has appeared in', nullable: true })
   films: Films[];
 
-  @ManyToMany(() => People, (people) => people.starships)
+  @ManyToMany((type) => People, (people) => people.starships)
   @JoinTable()
   @ApiProperty({ description: 'An array of People that this starship has been piloted by', nullable: true })
   pilots: People[];

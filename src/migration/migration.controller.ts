@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { MigrationService } from './migration.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePeopleDto } from 'src/people/dto/create-people.dto';
@@ -22,6 +22,7 @@ export class MigrationController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Internal Server Error" })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getAllData(): Promise<{ [key: string]: SwapiSummObj[] }> {
     return this.migrationService.getMigrationData()
   }
@@ -32,6 +33,7 @@ export class MigrationController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Internal Server Error" })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getAllDataPeople(): Promise<CreatePeopleDto[]> {
     return this.migrationService.getDataFromSwapi<CreatePeopleDto>('people')
   }
@@ -42,6 +44,7 @@ export class MigrationController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Internal Server Error" })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getAllDataPlanets(): Promise<CreatePlanetDto[]> {
     return this.migrationService.getDataFromSwapi<CreatePlanetDto>('planets')
   }
@@ -52,6 +55,7 @@ export class MigrationController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Internal Server Error" })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getAllDataFilms(): Promise<CreateFilmDto[]> {
     return this.migrationService.getDataFromSwapi<CreateFilmDto>('films')
   }
@@ -62,6 +66,7 @@ export class MigrationController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Internal Server Error" })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getAllDataSpecies(): Promise<CreateSpeciesDto[]> {
     return this.migrationService.getDataFromSwapi<CreateSpeciesDto>('species')
   }
@@ -72,6 +77,7 @@ export class MigrationController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Internal Server Error" })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getAllDataVehicles(): Promise<CreateVehicleDto[]> {
     return this.migrationService.getDataFromSwapi<CreateVehicleDto>('vehicles')
   }
@@ -82,9 +88,18 @@ export class MigrationController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: "Internal Server Error" })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getAllDataStarships(): Promise<CreateStarshipDto[]> {
     return this.migrationService.getDataFromSwapi<CreateStarshipDto>('starships')
   }
 
+  @Post('createAll')
+  @ApiOperation({ summary: "Create all objects to DB" })
+  @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  async create() {
+    return await this.migrationService.createAllObjectsToDB()
+  }
 
 }

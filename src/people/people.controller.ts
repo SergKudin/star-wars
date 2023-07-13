@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Redirect, Req, Res, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport'
 import { CreatePeopleDto } from './dto/create-people.dto';
 import { UpdatePeopleDto } from './dto/upate-people.dto';
 import { PeopleService } from './people.service';
-import { People1 } from './entities/people1.entity';
+import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { People } from './entities/people.entity';
 
 @ApiTags('People')
 // @ApiSecurity("X-API-KEY", ["X-API-KEY"]) 
@@ -20,79 +21,77 @@ export class PeopleController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @Post()
-  create(@Body() createPeopleDto: CreatePeopleDto): CreatePeopleDto {
-    return this.peopleService.create(createPeopleDto)
-  }
-
-  @Get()
-  // @UseGuards(AuthGuard("api-key"))
-  // // AuthGuard: Это класс-хранитель (guard) в NestJS, который предоставляет механизм аутентификации и авторизации для защиты эндпоинтов.
-  // // "api-key": Это имя стратегии аутентификации, которое передается в AuthGuard, указывающее, какой тип аутентификации должен быть применен.
-  @ApiOperation({ summary: "Returns all available records of People" })
-  // summary: Краткое описание операции (метода).
-  // description: Подробное описание операции (метода).
-  // @ApiQuery({ name: "userId", required: true, description: "User identifier" })
-  // // name: Имя параметра запроса. В данном случае, "userId".
-  // // required: Указывает, является ли параметр обязательным (true/false).
-  // // description: Описание параметра запроса. В данном случае, "User identifier".
-  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePeopleDto, isArray: true })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
-  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  // status: HTTP-статус код ответа.
-  // description: Описание ответа.
-  // type: Тип данных, используемый в ответе.
-  // isArray: Указывает, является ли ответ массивом (true/false).
-  getAll(): CreatePeopleDto[] {
-    return this.peopleService.getAll()
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() createPeopleDto: CreatePeopleDto): Promise<People> {
+    return await this.peopleService.createPeople(createPeopleDto)
   }
 
   // @UseGuards(AuthGuard("api-key"))
   @ApiOperation({ summary: "Returns a note with specified id" })
   @ApiParam({ name: "id", required: true, description: "People identifier" })
-  // name: Имя параметра запроса. В данном случае, "id".
-  // required: Указывает, является ли параметр обязательным (true/false).
-  // description: Описание параметра запроса. В данном случае, "People identifier".
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePeopleDto })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @Get(':id')
-  getById(@Param('id', ParseIntPipe) id: number): CreatePeopleDto {
+  getById(@Param('id', ParseIntPipe) id: number) {
     return this.peopleService.getById(id)
   }
 
   // @UseGuards(AuthGuard("api-key"))
   @ApiOperation({ summary: "Returns the specified page number with size PAGE_LIMIT" })
   @ApiParam({ name: "page", required: true, description: "Page number" })
-  // name: Имя параметра запроса. В данном случае, "id".
+  // name: Имя параметра запроса. В данном случае номер страницы.
   // required: Указывает, является ли параметр обязательным (true/false).
   // description: Описание параметра запроса. В данном случае, "People identifier".
-  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePeopleDto })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: SwapiResponse<People> })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @Get('page/:page')
-  getAllWithPagination(@Param('page', ParseIntPipe) page: number): CreatePeopleDto[] {
-    return this.peopleService.getAllWithPagination(page, +process.env.PAGE_LIMIT)
+  getAllWithPagination(@Req() request: Request, @Param('page', ParseIntPipe) page: number): Promise<SwapiResponse<People>> {
+    return this.peopleService.getAllWithPagination(request.url, page, +process.env.PAGE_LIMIT)
   }
 
-  // @UseGuards(AuthGuard("api-key"))
+  // @UseGuards(AuthGuard("api-key" ))
   @ApiOperation({ summary: "Updates a People with specified id" })
   @ApiParam({ name: "id", required: true, description: "People identifier" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: UpdatePeopleDto })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @Patch(':id')
-  update(@Body() updatePeopleDto: UpdatePeopleDto, @Param('id', ParseIntPipe) id: number): UpdatePeopleDto {
-    return this.peopleService.update(id, updatePeopleDto)
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  update(@Body() updatePeopleDto: UpdatePeopleDto, @Param('id', ParseIntPipe) id: string): Promise<People> {
+    return this.peopleService.updatePeople(id, updatePeopleDto)
   }
 
   // @UseGuards(AuthGuard("api-key"))
-  @ApiOperation({ summary: "Deletes a People with specified id" })
+  @ApiOperation({ summary: "Soft-deletes a People with specified id" })
   @ApiParam({ name: "id", required: true, description: "People identifier" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  @Delete(':id')
+  @Delete('remove/:id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.peopleService.remove(id)
+  }
+
+  // @UseGuards(AuthGuard("api-key"))
+  @ApiOperation({ summary: "Restores records of people with the specified ID" })
+  @ApiParam({ name: "id", required: true, description: "People identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  @Post('restore/:id')
+  restoreSoftDelete(@Param('id', ParseIntPipe) id: number) {
+    return this.peopleService.restore(id)
+  }
+
+  // @UseGuards(AuthGuard("api-key"))
+  @ApiOperation({ summary: "Deletes all People data" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  @Delete('removeAll')
+  removeAll() {
+    return this.peopleService.removeAll()
   }
 }

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import * as argon2 from "argon2";
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -24,7 +24,7 @@ export class UserService {
 
     const user = await this.userRepository.save({
       email: createUserDto.email,
-      password: await argon2.hash(createUserDto.password)
+      password: await bcrypt.hash(createUserDto.password, +process.env.SALT_OR_ROUNDS)
     })
 
     return { user };

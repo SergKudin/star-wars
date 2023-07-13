@@ -45,11 +45,11 @@ export class Planet {
   @ApiProperty({ description: 'The percentage of the planets surface covered in water or water bodies', nullable: true })
   surface_water: string;
 
-  @OneToMany(() => People, (resident) => resident.homeworld)
+  @OneToMany((type) => People, (resident) => resident.homeworld)
   @ApiProperty({ description: 'An array of People that live on this planet', nullable: true })
   residents: People[];
 
-  @ManyToMany(() => Films, (film) => film.planets)
+  @ManyToMany((type) => Films, (film) => film.planets)
   @JoinTable()
   @ApiProperty({ description: ' An array of Film  that this planet has appeared in.', nullable: true })
   films: Films[];

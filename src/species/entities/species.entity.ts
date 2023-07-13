@@ -49,12 +49,12 @@ export class Species {
   @ApiProperty({ description: 'The URL of the homeworld resource associated with the species', nullable: true })
   homeworld: string;
 
-  @ManyToMany(() => People, (people) => people.species)
+  @ManyToMany((type) => People, (people) => people.species)
   @JoinTable()
   @ApiProperty({ description: 'An array of People that are a part of this species.', nullable: true })
   people: People[];
 
-  @ManyToMany(() => Films, (film) => film.species)
+  @ManyToMany((type) => Films, (film) => film.species)
   @JoinTable()
   @ApiProperty({ description: 'An array of Film that this species has appeared in.', nullable: true })
   films: Films[];

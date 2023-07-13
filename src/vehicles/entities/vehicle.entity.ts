@@ -53,12 +53,12 @@ export class Vehicles {
   @ApiProperty({ description: 'The maximum period of consumables supply for the vehicle', nullable: true })
   consumables: string;
 
-  @ManyToMany(() => Films, (films) => films.vehicles)
+  @ManyToMany((type) => Films, (films) => films.vehicles)
   @JoinTable()
   @ApiProperty({ description: 'An array of Film that this vehicle has appeared in.', nullable: true })
   films: Films[];
 
-  @ManyToMany(() => People, (people) => people.vehicles)
+  @ManyToMany((type) => People, (people) => people.vehicles)
   @JoinTable()
   @ApiProperty({ description: 'An array of People that this vehicle has been piloted by.', nullable: true })
   pilots: People[];

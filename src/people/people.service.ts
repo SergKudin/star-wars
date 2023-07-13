@@ -1,48 +1,169 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePeopleDto } from './dto/create-people.dto';
-import { UpdatePeopleDto } from './dto/upate-people.dto';
+import { BadRequestException, Inject, Injectable, NotFoundException, UsePipes, ValidationPipe } from '@nestjs/common'
+import { CreatePeopleDto } from './dto/create-people.dto'
+import { UpdatePeopleDto } from './dto/upate-people.dto'
+import { SwapiResponse } from 'src/types/swapiResponse.type'
+import { People } from './entities/people.entity'
+import { In, Repository } from 'typeorm'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Planet } from 'src/planets/entities/planet.entity'
+import { Films } from 'src/films/entities/film.entity'
+import { Species } from 'src/species/entities/species.entity'
+import { Vehicles } from 'src/vehicles/entities/vehicle.entity'
+import { Starships } from 'src/starships/entities/starship.entity'
 
 @Injectable()
 export class PeopleService {
+  constructor(
+    @InjectRepository(People)
+    private readonly peopleRepository: Repository<People>,
+    @InjectRepository(Planet)
+    private readonly planetRepository: Repository<Planet>,
+    @InjectRepository(Films)
+    private readonly filmsRepository: Repository<Films>,
+    @InjectRepository(Species)
+    private readonly speciesRepository: Repository<Species>,
+    @InjectRepository(Vehicles)
+    private readonly vehiclesRepository: Repository<Vehicles>,
+    @InjectRepository(Starships)
+    private readonly starshipsRepository: Repository<Starships>,
+  ) { }
 
-  private people = []
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async createPeople(createPeopleDto: CreatePeopleDto) {
+    const existPeople = await this.peopleRepository.findOne({ where: { url: createPeopleDto.url } })
+    if (existPeople)
+      throw new BadRequestException(`This People: ${createPeopleDto.name} with url: ${createPeopleDto.url} already exists`)
 
-  getAll() {
-    return this.people
+    const { homeworld, films, species, vehicles, starships, ...rest } = createPeopleDto
+
+    // Save the People object with no links    
+    const savedPeople = await this.peopleRepository.save(rest);
+
+    // Get instances of related objects from repositories & Establish links between objects    
+    if (homeworld) savedPeople.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
+    if (films) savedPeople.films = await this.filmsRepository.find({ where: { url: In(films) } });
+    if (species) savedPeople.species = await this.speciesRepository.find({ where: { url: In(species) } });
+    if (starships) savedPeople.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
+    if (vehicles) savedPeople.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
+
+    // Save the updated People object with the relationships set    
+    return this.peopleRepository.save(savedPeople);
   }
 
-  getAllWithPagination(page: number, limit: number) {
+  async updatePeople(id: string, updatePeopleDto: UpdatePeopleDto): Promise<People> {
+    const existPeopleUrl = await this.peopleRepository.findOne({ where: { url: updatePeopleDto.url } })
+    if (!existPeopleUrl)
+      throw new BadRequestException(`Bad request! Check You data: url ${updatePeopleDto.url} not find`)
+    if ((existPeopleUrl._id !== id))
+      throw new BadRequestException(`Bad request! Check You data: find url ${existPeopleUrl.url} with id: ${existPeopleUrl._id}`)
+
+    updatePeopleDto._id = id
+    const { homeworld, films, species, vehicles, starships, ...rest } = updatePeopleDto
+
+    // Save the People object with no links    
+    const savedPeople = await this.peopleRepository.save(rest);
+
+    // Get instances of related objects from repositories & Establish links between objects    
+    if (homeworld) savedPeople.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
+    if (films) savedPeople.films = await this.filmsRepository.find({ where: { url: In(films) } });
+    if (species) savedPeople.species = await this.speciesRepository.find({ where: { url: In(species) } });
+    if (starships) savedPeople.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
+    if (vehicles) savedPeople.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
+
+    // Save the updated People object with the relationships set    
+    return this.peopleRepository.save(savedPeople);
+  }
+
+  async createPeopleWithoutRelations(createPeopleDto: CreatePeopleDto[]): Promise<People[]> {
+
+    const savedPeople: People[] = [];
+
+    // Save People Objects Without Relationships    
+    for (let dto of createPeopleDto) {
+      const existPeople = await this.peopleRepository.findOne({ where: { url: dto.url } })
+      if (existPeople)
+        throw new BadRequestException(`This People: ${dto.name} with url: ${dto.url} already exists`)
+
+      const { homeworld, films, species, vehicles, starships, ...rest } = dto;
+
+      const savedPerson = await this.peopleRepository.save(rest);
+      savedPeople.push(savedPerson);
+    }
+    return savedPeople;
+  }
+
+  async updatePeopleRelations(updatePeopleDto: UpdatePeopleDto[]): Promise<People[]> {
+    const savedPeople: People[] = [];
+
+    for (const dto of updatePeopleDto) {
+
+      const { homeworld, films, species, vehicles, starships, url } = dto;
+      let existingPeople = await this.peopleRepository.findOne({ where: { url } });
+
+      if (!existingPeople) {
+        const { homeworld, films, species, vehicles, starships, ...rest } = dto
+        existingPeople = await this.peopleRepository.save(rest);
+        console.error(`People ${dto.name} not found. Create new data people`);
+      }
+
+      existingPeople.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
+      existingPeople.films = await this.filmsRepository.find({ where: { url: In(films) } });
+      existingPeople.species = await this.speciesRepository.find({ where: { url: In(species) } });
+      existingPeople.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
+      existingPeople.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
+
+      const savedPerson = await this.peopleRepository.save(existingPeople);
+      savedPeople.push(savedPerson);
+    }
+    return savedPeople;
+  }
+
+  async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<People>> {
     // limit - elements by page
-    const indexStart = (page - 1) * limit
-    console.log("page = " + page + " limit = " + limit)
-    console.log(JSON.stringify(this.people.slice(indexStart, indexStart + limit)))
-    return this.people.slice(indexStart, indexStart + limit)
+    console.log('getAllWithPagination')
+    const count: number = await this.peopleRepository.count()
+    const indexStart: number = (page - 1) * pageLimit
+    route = process.env.IP + route.split('/').slice(0, -1).join('/') + '/'
+    const next: string = (page * pageLimit < count) ? route + (page + 1) : 'null'
+    const previous: string = (page < 2) ? 'null' : route + (page - 1)
+    const results = await this.peopleRepository.find({
+      skip: indexStart,
+      take: pageLimit,
+    })
+    return { count, next, previous, results }
   }
 
-  getById(id: number) {
-    return this.people.find(p => p._id === id)
+  async getById(id: number) {
+    return await this.peopleRepository.findOne({ where: { _id: id + '' } })
   }
 
-  create(peopleDto: CreatePeopleDto) {
-    const p = {
-      ...peopleDto,
-      _id: Date.now()
-    }
-    this.people.push(p)
-    return p
+  async remove(id: number) {
+    const existPeople = await this.peopleRepository.findOne({ where: { _id: id + '' } })
+    if (!existPeople)
+      throw new BadRequestException(`Bad request! Check You data: id ${id} not find`)
+
+    return await this.peopleRepository
+      .createQueryBuilder('people')
+      .softDelete()
+      .where("_id = :id", { id: id })
+      .execute()
   }
 
-  update(id: number, peopleDto: UpdatePeopleDto) {
-    const index = this.people.findIndex(p => p.id === id)
-    if (index === -1) {
-      return
-    }
-    this.people[index] = peopleDto
-    return this.people[index]
+  async restore(id: number) {
+    return await this.peopleRepository
+      .createQueryBuilder('people')
+      .restore()
+      .where("_id = :id", { id: id })
+      .execute()
   }
 
-  remove(id: number) {
-    this.people = this.people.filter(p => p.id != id)
+  async removeAll() {
+    console.log('removeAll !!!')
+    return await this.peopleRepository
+      .createQueryBuilder('people')
+      .delete()
+      .from(People)
+      .execute();
   }
 
 }

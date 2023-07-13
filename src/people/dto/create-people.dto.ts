@@ -1,4 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
+import { Transform, TransformFnParams, TransformOptions } from "class-transformer"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 
 const descr = {
   name: 'The name of this person',
@@ -18,56 +20,88 @@ const descr = {
   created: 'the ISO 8601 date format of the time that this resource was created.',
   edited: 'the ISO 8601 date format of the time that this resource was edited.',
 }
-
 export class CreatePeopleDto {
   @ApiProperty({ description: 'People id', nullable: true })
-  _id?: number
+  @IsString()
+  @IsOptional()
+  _id?: string
 
   @ApiProperty({ description: descr.name, nullable: true })
+  @IsString()
   name: string
 
   @ApiProperty({ description: descr.height, nullable: true })
-  height: number
+  // @IsNumber()
+  @IsString()
+  height: string
 
   @ApiProperty({ description: descr.mass, nullable: true })
-  mass: number
+  // @Transform((value) => (value ? value : 0), { toClassOnly: true })
+  @IsString()
+  mass: string
 
   @ApiProperty({ description: descr.hair_color, nullable: true })
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   hair_color: string
 
   @ApiProperty({ description: descr.skin_color, nullable: true })
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   skin_color: string
 
   @ApiProperty({ description: descr.eye_color, nullable: true })
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   eye_color: string
 
   @ApiProperty({ description: descr.birth_year, nullable: true })
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   birth_year: string
 
   @ApiProperty({ description: descr.gender, nullable: true })
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   gender: string
 
   @ApiProperty({ description: descr.homeworld, nullable: true })
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   homeworld: string
 
   @ApiProperty({ description: descr.films, nullable: true })
+  @IsArray()
+  @IsString({ each: true })
   films: string[]
 
   @ApiProperty({ description: descr.species, nullable: true })
+  @IsArray()
+  @IsString({ each: true })
   species: string[]
 
   @ApiProperty({ description: descr.vehicles, nullable: true })
+  @IsArray()
+  @IsString({ each: true })
   vehicles: string[]
 
   @ApiProperty({ description: descr.starships, nullable: true })
+  @IsArray()
+  @IsString({ each: true })
   starships: string[]
 
   @ApiProperty({ description: descr.created, nullable: true })
-  created: string[]
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
+  created: string
 
   @ApiProperty({ description: descr.edited, nullable: true })
-  edited: string[]
+  @IsString()
+  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
+  edited: string
 
   @ApiProperty({ description: descr.url, nullable: true })
-  url: string[]
+  @IsString()
+  url: string
 }
+
