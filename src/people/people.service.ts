@@ -28,7 +28,6 @@ export class PeopleService {
     private readonly starshipsRepository: Repository<Starships>,
   ) { }
 
-  @UsePipes(new ValidationPipe({ transform: true }))
   async createPeople(createPeopleDto: CreatePeopleDto) {
     const existPeople = await this.peopleRepository.findOne({ where: { url: createPeopleDto.url } })
     if (existPeople)
@@ -83,7 +82,6 @@ export class PeopleService {
       const existPeople = await this.peopleRepository.findOne({ where: { url: dto.url } })
       if (existPeople)
         throw new BadRequestException(`This People: ${dto.name} with url: ${dto.url} already exists`)
-
       const { homeworld, films, species, vehicles, starships, ...rest } = dto;
 
       const savedPerson = await this.peopleRepository.save(rest);
@@ -92,10 +90,10 @@ export class PeopleService {
     return savedPeople;
   }
 
-  async updatePeopleRelations(updatePeopleDto: UpdatePeopleDto[]): Promise<People[]> {
+  async updatePeopleRelations(createPeopleDto: CreatePeopleDto[]): Promise<People[]> {
     const savedPeople: People[] = [];
 
-    for (const dto of updatePeopleDto) {
+    for (const dto of createPeopleDto) {
 
       const { homeworld, films, species, vehicles, starships, url } = dto;
       let existingPeople = await this.peopleRepository.findOne({ where: { url } });
@@ -114,6 +112,7 @@ export class PeopleService {
 
       const savedPerson = await this.peopleRepository.save(existingPeople);
       savedPeople.push(savedPerson);
+      // console.log('savedPerson - ' + savedPerson.name)
     }
     return savedPeople;
   }
@@ -158,7 +157,7 @@ export class PeopleService {
   }
 
   async removeAll() {
-    console.log('removeAll !!!')
+    console.log('removeAllPeople !!!')
     return await this.peopleRepository
       .createQueryBuilder('people')
       .delete()

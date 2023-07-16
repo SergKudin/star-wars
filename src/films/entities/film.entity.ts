@@ -4,13 +4,13 @@ import { Planet } from "src/planets/entities/planet.entity";
 import { Species } from "src/species/entities/species.entity";
 import { Starships } from "src/starships/entities/starship.entity";
 import { Vehicles } from "src/vehicles/entities/vehicle.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Films {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'Film id', nullable: true })
-  film_id: number;
+  film_id: string;
 
   @Column()
   @ApiProperty({ description: 'The title of the film', nullable: true })
@@ -18,9 +18,9 @@ export class Films {
 
   @Column()
   @ApiProperty({ description: 'The episode number of the film', nullable: true })
-  episode_id: number;
+  episode_id: string;
 
-  @Column()
+  @Column({ length: 1000 })
   @ApiProperty({ description: 'The opening crawl text of the film', nullable: true })
   opening_crawl: string;
 
@@ -36,27 +36,26 @@ export class Films {
   @ApiProperty({ description: 'The release date of the film', nullable: true })
   release_date: string;
 
-  @ManyToMany(() => Species, (species) => species.films)
+  @ManyToMany(() => Species, (species) => species.films, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: 'An array of species that are in this film', nullable: true })
   species: Species[];
 
-  @ManyToMany(() => Starships, (starships) => starships.films)
+  @ManyToMany(() => Starships, (starships) => starships.films, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: 'An array of starship that are in this film.', nullable: true })
   starships: Starships[];
 
-  @ManyToMany(() => Vehicles, (vehicles) => vehicles.films)
+  @ManyToMany(() => Vehicles, (vehicles) => vehicles.films, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: 'An array of vehicle that are in this film', nullable: true })
   vehicles: Vehicles[];
 
   @ManyToMany(() => People, (people) => people.films)
-  @JoinTable()
   @ApiProperty({ description: 'An array of people that are in this film', nullable: true })
   characters: People[];
 
-  @ManyToMany(() => Planet, (planet) => planet.films)
+  @ManyToMany(() => Planet, (planet) => planet.films, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: 'An array of planet that are in this film', nullable: true })
   planets: Planet[];

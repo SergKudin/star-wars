@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { People } from "src/people/entities/people.entity";
 import { Films } from "src/films/entities/film.entity";
 
@@ -7,7 +7,7 @@ import { Films } from "src/films/entities/film.entity";
 export class Planet {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'Planet id', nullable: true })
-  planet_id: number;
+  planet_id: string;
 
   @Column()
   @ApiProperty({ description: 'The name of the planet', nullable: true })
@@ -50,7 +50,6 @@ export class Planet {
   residents: People[];
 
   @ManyToMany((type) => Films, (film) => film.planets)
-  @JoinTable()
   @ApiProperty({ description: ' An array of Film  that this planet has appeared in.', nullable: true })
   films: Films[];
 

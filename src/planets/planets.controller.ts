@@ -48,8 +48,18 @@ export class PlanetsController {
   @ApiParam({ name: 'id', required: true, description: 'Planet identifier' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @Delete(':id')
+  @Delete('remove/:id')
   remove(@Param('id') id: string) {
     return this.planetsService.remove(+id);
   }
+
+  @ApiOperation({ summary: "Deletes all Planets data" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  @Delete('removeAll')
+  removeAll() {
+    return this.planetsService.removeAll()
+  }
+
 }

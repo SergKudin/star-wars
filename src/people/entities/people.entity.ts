@@ -54,30 +54,30 @@ export class People {
   @IsString()
   skin_color: string
 
-  @ManyToOne((type) => Planet, (planet) => planet.residents)
+  @ManyToOne((type) => Planet, (planet) => planet.residents, { cascade: true, })
   @JoinColumn({ name: 'planet_id' })
   @ApiProperty({ description: 'A planet that this person was born on or inhabits.', nullable: true })
   homeworld: Planet
 
-  @ManyToMany((type) => Films, (film) => film.characters)
+  @ManyToMany((type) => Films, (film) => film.characters, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: ' An array of film that this person has been in.', nullable: true })
   @IsArray()
   films: Films[]
 
-  @ManyToMany((type) => Species, (species) => species.people)
+  @ManyToMany((type) => Species, (species) => species.people, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: 'An array of species that this person belongs to.', nullable: true })
   @IsArray()
   species: Species[]
 
-  @ManyToMany((type) => Starships, (starships) => starships.pilots)
+  @ManyToMany((type) => Starships, (starships) => starships.pilots, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: 'An array of starship that this person has piloted.', nullable: true })
   @IsArray()
   starships: Starships[]
 
-  @ManyToMany((type) => Vehicles, (vehicles) => vehicles.pilots)
+  @ManyToMany((type) => Vehicles, (vehicles) => vehicles.pilots, { cascade: true, })
   @JoinTable()
   @ApiProperty({ description: 'An array of vehicle that this person has piloted.', nullable: true })
   @IsArray()

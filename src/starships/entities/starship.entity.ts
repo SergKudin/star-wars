@@ -7,7 +7,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, Pr
 export class Starships {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'Starship id', nullable: true })
-  starship_id: number;
+  starship_id: string;
 
   @Column()
   @ApiProperty({ description: 'The name of the starship', nullable: true })
@@ -62,12 +62,10 @@ export class Starships {
   consumables: string;
 
   @ManyToMany((type) => Films, (film) => film.starships)
-  @JoinTable()
   @ApiProperty({ description: 'An array of Film that this starship has appeared in', nullable: true })
   films: Films[];
 
   @ManyToMany((type) => People, (people) => people.starships)
-  @JoinTable()
   @ApiProperty({ description: 'An array of People that this starship has been piloted by', nullable: true })
   pilots: People[];
 

@@ -1,13 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Films } from "src/films/entities/film.entity";
 import { People } from "src/people/entities/people.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Planet } from "src/planets/entities/planet.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Species {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'Species id', nullable: true })
-  species_id: number;
+  species_id: string;
 
   @Column()
   @ApiProperty({ description: 'The name of the species', nullable: true })
@@ -45,17 +46,16 @@ export class Species {
   @ApiProperty({ description: 'The language typically spoken by the species', nullable: true })
   language: string;
 
-  @Column()
+  @OneToOne(() => Planet, { cascade: true })
+  @JoinColumn({ name: 'planet_id' })
   @ApiProperty({ description: 'The URL of the homeworld resource associated with the species', nullable: true })
-  homeworld: string;
+  homeworld: Planet
 
   @ManyToMany((type) => People, (people) => people.species)
-  @JoinTable()
   @ApiProperty({ description: 'An array of People that are a part of this species.', nullable: true })
   people: People[];
 
   @ManyToMany((type) => Films, (film) => film.species)
-  @JoinTable()
   @ApiProperty({ description: 'An array of Film that this species has appeared in.', nullable: true })
   films: Films[];
 
@@ -70,5 +70,6 @@ export class Species {
   @UpdateDateColumn()
   @ApiProperty({ description: 'Record update date', nullable: true })
   edited: string;
+  existingSpecies: Planet;
 }
 

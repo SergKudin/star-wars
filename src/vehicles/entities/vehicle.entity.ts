@@ -7,7 +7,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, Pr
 export class Vehicles {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'Vehicle id', nullable: true })
-  vehicle_id: number;
+  vehicle_id: string;
 
   @Column()
   @ApiProperty({ description: 'The name of the vehicle', nullable: true })
@@ -54,12 +54,10 @@ export class Vehicles {
   consumables: string;
 
   @ManyToMany((type) => Films, (films) => films.vehicles)
-  @JoinTable()
   @ApiProperty({ description: 'An array of Film that this vehicle has appeared in.', nullable: true })
   films: Films[];
 
   @ManyToMany((type) => People, (people) => people.vehicles)
-  @JoinTable()
   @ApiProperty({ description: 'An array of People that this vehicle has been piloted by.', nullable: true })
   pilots: People[];
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { StarshipsService } from './starships.service';
 import { CreateStarshipDto } from './dto/create-starship.dto';
 import { UpdateStarshipDto } from './dto/update-starship.dto';
@@ -48,8 +48,18 @@ export class StarshipsController {
   @ApiParam({ name: 'id', required: true, description: 'Starship identifier' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.starshipsService.remove(+id);
+  @Delete('remove/:id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.starshipsService.remove(id);
   }
+
+  @ApiOperation({ summary: "Deletes all Starship data" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  @Delete('removeAll')
+  removeAll() {
+    return this.starshipsService.removeAll()
+  }
+
 }

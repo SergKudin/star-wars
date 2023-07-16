@@ -11,6 +11,8 @@ import { VehiclesModule } from './vehicles/vehicles.module';
 import { SpeciesModule } from './species/species.module';
 import { PlanetsModule } from './planets/planets.module';
 import { MigrationModule } from './migration/migration.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './all-exception.filter';
 
 @Module({
   imports: [
@@ -41,6 +43,13 @@ import { MigrationModule } from './migration/migration.module';
     MigrationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+
+    AppService,
+  ],
 })
 export class AppModule { }

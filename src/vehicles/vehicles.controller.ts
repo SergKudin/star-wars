@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { VehiclesService } from './vehicles.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
@@ -48,8 +48,18 @@ export class VehiclesController {
   @ApiParam({ name: 'id', required: true, description: 'Vehicle identifier' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('remove/:id')
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.vehiclesService.remove(+id);
   }
+
+  @ApiOperation({ summary: "Deletes all Vehicle data" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  @Delete('removeAll')
+  removeAll() {
+    return this.vehiclesService.removeAll()
+  }
+
 }

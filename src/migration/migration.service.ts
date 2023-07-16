@@ -2,6 +2,8 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { firstValueFrom } from 'rxjs'
+import { Repository } from 'typeorm'
+
 import { CreateFilmDto } from 'src/films/dto/create-film.dto'
 import { Films } from 'src/films/entities/film.entity'
 import { CreatePeopleDto } from 'src/people/dto/create-people.dto'
@@ -17,14 +19,28 @@ import { SwapiResponse } from 'src/types/swapiResponse.type'
 import { SwapiSummObj } from 'src/types/swapiSummObj.type'
 import { CreateVehicleDto } from 'src/vehicles/dto/create-vehicle.dto'
 import { Vehicles } from 'src/vehicles/entities/vehicle.entity'
-import { Repository, getConnection } from 'typeorm'
-import { migrPeopleData } from './migration.testPeople'
+import { FilmsService } from 'src/films/films.service'
+import { PlanetsService } from 'src/planets/planets.service'
+import { SpeciesService } from 'src/species/species.service'
+import { VehiclesService } from 'src/vehicles/vehicles.service'
+import { StarshipsService } from 'src/starships/starships.service'
+import { migrPeopleData } from './data-for-test/migration.testPeople'
+import { migrFilmsData } from './data-for-test/migration.testFilm'
+import { migrPlanetsData } from './data-for-test/migration.testPlanet'
+import { migrSpeciesData } from './data-for-test/migration.testSpecies'
+import { migrStarshipsData } from './data-for-test/migration.testStarships'
+import { migrVihiclesData } from './data-for-test/migration.testVihicles'
 
 @Injectable()
 export class MigrationService {
   constructor(
     private readonly httpService: HttpService,
     private readonly peopleService: PeopleService,
+    private readonly filmService: FilmsService,
+    private readonly planetsService: PlanetsService,
+    private readonly speciesService: SpeciesService,
+    private readonly vehiclesService: VehiclesService,
+    private readonly starshipsService: StarshipsService,
     @InjectRepository(People)
     private readonly peopleRepository: Repository<People>,
     @InjectRepository(Planet)
@@ -37,10 +53,10 @@ export class MigrationService {
     private readonly vehiclesRepository: Repository<Vehicles>,
     @InjectRepository(Starships)
     private readonly starshipsRepository: Repository<Starships>,
-
   ) { }
 
   adrSwapi = process.env.SWAPI
+  useTestData = true
 
   migrationData: Map<string, SwapiSummObj[]> = new Map<string, SwapiSummObj[]>([
     ['people', [] as CreatePeopleDto[]],
@@ -91,97 +107,103 @@ export class MigrationService {
     return arr
   }
 
-  private objHandlers = {
+  private createSwapiSummObjWithoutRelations = {
     people: async (obj: CreatePeopleDto[]) => {
-      console.log('Processing CreatePeopleDto')
       await this.peopleService.createPeopleWithoutRelations(obj)
     },
-    planets: (obj: CreatePlanetDto[]) => {
-      console.log('Processing CreatePlanetDto' + JSON.stringify(obj))
+    planets: async (obj: CreatePlanetDto[]) => {
+      await this.planetsService.createPlanetWithoutRelations(obj)
     },
-    films: (obj: CreateFilmDto[]) => {
-      console.log('Processing CreateFilmDto:' + JSON.stringify(obj))
+    films: async (obj: CreateFilmDto[]) => {
+      await this.filmService.createFilmWithoutRelations(obj)
     },
-    species: (obj: CreateSpeciesDto[]) => {
-      console.log('Processing CreateSpeciesDto:' + JSON.stringify(obj))
+    species: async (obj: CreateSpeciesDto[]) => {
+      await this.speciesService.createSpeciesWithoutRelations(obj)
     },
-    vehicles: (obj: CreateVehicleDto[]) => {
-      console.log('Processing CreateVehicleDto:' + JSON.stringify(obj))
+    vehicles: async (obj: CreateVehicleDto[]) => {
+      await this.vehiclesService.createVehicleWithoutRelations(obj)
     },
-    starships: (obj: CreateStarshipDto[]) => {
-      console.log('Processing CreateStarshipDto')
+    starships: async (obj: CreateStarshipDto[]) => {
+      await this.starshipsService.createStarshipWithoutRelations(obj)
     },
   }
 
-  // private repositories = {
-  //   people: this.peopleRepository,
-  //   planets: this.planetRepository,
-  //   films: this.filmsRepository,
-  //   species: this.speciesRepository,
-  //   vehicles: this.vehiclesRepository,
-  //   starships: this.starshipsRepository,
-  // }
+  private updateSwapiSummObjRelations = {
+    people: async (obj: CreatePeopleDto[]) => {
+      await this.peopleService.updatePeopleRelations(obj)
+    },
+    planets: async (obj: CreatePlanetDto[]) => {
+      await this.planetsService.updatePlanetRelations(obj)
+    },
+    films: async (obj: CreateFilmDto[]) => {
+      await this.filmService.updateFilmRelations(obj)
+    },
+    species: async (obj: CreateSpeciesDto[]) => {
+      await this.speciesService.updateSpeciesRelations(obj)
+    },
+    vehicles: async (obj: CreateVehicleDto[]) => {
+      await this.vehiclesService.updateVehicleRelations(obj)
+    },
+    starships: async (obj: CreateStarshipDto[]) => {
+      await this.starshipsService.updateStarshipRelations(obj)
+    },
+  }
 
-  // async createSourse(key: string, obj: SwapiSummObj): Promise<void> {
-  //   if (key) {
-  //     await this.objHandlers[key](obj)
-  //   }
-  // }
+  async clearDB(clearDB: boolean) {
+    if (!clearDB) return
+    console.log(`ATTENTION!!! Database cleanup in progress!`)
+    let clear: number
+    do {
+      try {
+        clear = (await this.peopleService.removeAll()).affected
+        clear += (await this.filmService.removeAll()).affected
 
-  // async clearDB(): Promise<void> {
-  //   this.migrationData.forEach(async (arrObj, key) => {
-  //     if (key) {
-  //       await this.dbClear[key]()
-  //     }
-  //   })
-  // }
+        clear += (await this.starshipsService.removeAll()).affected
+        clear += (await this.vehiclesService.removeAll()).affected
+        clear += (await this.speciesService.removeAll()).affected
+        clear += (await this.planetsService.removeAll()).affected
+      } catch (e) { }
+    } while (clear > 0)
+  }
 
-  // async createAllObjectsToDB1() {
-  //   // await this.getAllDataFromSwapi()
-
-  //   // await this.clearDB()
-
-  //   this.migrationData.forEach((arrObj, key) => {
-  //     // console.log(key)
-  //     arrObj.forEach(async obj => {
-  //       await this.createSourse(key, obj)
-  //     })
-  //   })
-  // }
-
-
-  // ...
 
   async createAllObjectsToDB() {
 
-    await this.peopleService.removeAll()
+    const remove: string = process.env.CLEAR_DB_BEFORE_WRITING_DATA_FROM_SWAPI ?? 'true'
+    const clearDB: boolean = (remove === 'true') ? true : false
+    await this.clearDB(clearDB)
 
-    this.migrationData.set('people', migrPeopleData)
+    // for start test
+    if (this.useTestData) {
+      console.log(`Use test data`)
+      this.migrationData.set('people', migrPeopleData as unknown as CreatePeopleDto[])
+      this.migrationData.set('planets', migrPlanetsData as unknown as CreatePlanetDto[])
+      this.migrationData.set('films', migrFilmsData as unknown as CreateFilmDto[])
+      this.migrationData.set('species', migrSpeciesData as unknown as CreateSpeciesDto[])
+      this.migrationData.set('vehicles', migrVihiclesData as unknown as CreateVehicleDto[])
+      this.migrationData.set('starships', migrStarshipsData as unknown as CreateStarshipDto[])
+    } else {
+      await this.getAllDataFromSwapi()
+    }
 
     for (const sourse of this.migrationData) {
       const key = sourse[0];
       console.log(`Start creating ${key}`);
-      // const arrObj = sourse[1];
       if (key) {
-        // const queryRunner = this.repositories[key].manager.connection.createQueryRunner()
-
-        // await queryRunner.startTransaction();
-
-        // try {
-        // for (const obj of arrObj) {
-        //   await queryRunner.manager.save(obj);
-        // }
-        // await queryRunner.commitTransaction();
-        // } catch (error) {
-        //   console.error(`Error while creating ${key}:`, error);
-        //   await queryRunner.rollbackTransaction();
-        // } finally {
-        //   await queryRunner.release();
-        // }
-        await this.objHandlers[key](sourse[1])
-        console.log(`While creating ${key} success`);
+        await this.createSwapiSummObjWithoutRelations[key](sourse[1])
+        console.log(` While creating ${key} success`);
       }
     }
+
+    for (const sourse of this.migrationData) {
+      const key = sourse[0];
+      console.log(`Start creating relations ${key}`);
+      if (key) {
+        await this.updateSwapiSummObjRelations[key](sourse[1])
+        console.log(` While creating relations ${key} success`);
+      }
+    }
+
   }
 
 
