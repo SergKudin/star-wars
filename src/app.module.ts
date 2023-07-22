@@ -13,6 +13,7 @@ import { PlanetsModule } from './planets/planets.module';
 import { MigrationModule } from './migration/migration.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './all-exception.filter';
+import { PhotoModule } from './photo/photo.module';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { AllExceptionsFilter } from './all-exception.filter';
         database: configService.get('DATABASE_NAME'),
         // autoLoadEntities: true,
         // insecureAuth: true,
-        // debug: false,
+        // debug: true,
         entities: [__dirname + '/**/*.entity{.js, .ts}'],
         synchronize: true,
       }),
@@ -41,6 +42,7 @@ import { AllExceptionsFilter } from './all-exception.filter';
     SpeciesModule,
     PlanetsModule,
     MigrationModule,
+    PhotoModule,
   ],
   controllers: [AppController],
   providers: [
@@ -48,7 +50,6 @@ import { AllExceptionsFilter } from './all-exception.filter';
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
-
     AppService,
   ],
 })

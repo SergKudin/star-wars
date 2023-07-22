@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Films } from "src/films/entities/film.entity";
 import { People } from "src/people/entities/people.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Photo } from "src/photo/entities/photo.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Vehicles {
@@ -52,6 +53,10 @@ export class Vehicles {
   @Column()
   @ApiProperty({ description: 'The maximum period of consumables supply for the vehicle', nullable: true })
   consumables: string;
+
+  @OneToMany(() => Photo, (photo) => photo.vehicles)
+  @ApiProperty({ description: 'An array of Photos that are in this vehicles', nullable: true })
+  photos: Photo[]
 
   @ManyToMany((type) => Films, (films) => films.vehicles)
   @ApiProperty({ description: 'An array of Film that this vehicle has appeared in.', nullable: true })

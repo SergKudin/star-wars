@@ -12,7 +12,7 @@ import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships]),
+    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships,]),
   ],
   controllers: [SpeciesController],
   providers: [SpeciesService],

@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Films } from "src/films/entities/film.entity";
 import { People } from "src/people/entities/people.entity";
+import { Photo } from "src/photo/entities/photo.entity";
 import { Planet } from "src/planets/entities/planet.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -50,6 +51,10 @@ export class Species {
   @JoinColumn({ name: 'planet_id' })
   @ApiProperty({ description: 'The URL of the homeworld resource associated with the species', nullable: true })
   homeworld: Planet
+
+  @OneToMany(() => Photo, (photo) => photo.species)
+  @ApiProperty({ description: 'An array of Photos that are in this species', nullable: true })
+  photos: Photo[]
 
   @ManyToMany((type) => People, (people) => people.species)
   @ApiProperty({ description: 'An array of People that are a part of this species.', nullable: true })

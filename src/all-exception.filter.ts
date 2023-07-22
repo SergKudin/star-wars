@@ -6,10 +6,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
   catch(exception: any, host: ArgumentsHost) {
     this.logger.error('Exception:', exception);
+    this.logger.error('Stack trace:', exception.stack);
 
     const response = host.switchToHttp().getResponse();
     response.status(500).json({
-      message: 'Internal Server Error. ' + exception.message,
+      message: 'Internal Server Error',
+      error: exception.toString(),
+      stack: exception.stack,
     });
   }
 }
