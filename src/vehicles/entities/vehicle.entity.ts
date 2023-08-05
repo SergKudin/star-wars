@@ -1,8 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Films } from "src/films/entities/film.entity";
 import { People } from "src/people/entities/people.entity";
-import { Photo } from "src/photo/entities/photo.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Vehicles {
@@ -54,9 +53,9 @@ export class Vehicles {
   @ApiProperty({ description: 'The maximum period of consumables supply for the vehicle', nullable: true })
   consumables: string;
 
-  @OneToMany(() => Photo, (photo) => photo.vehicles)
-  @ApiProperty({ description: 'An array of Photos that are in this vehicles', nullable: true })
-  photos: Photo[]
+  // @OneToMany(() => Photo, (photo) => photo.vehicles)
+  // @ApiProperty({ description: 'An array of Photos that are in this vehicles', nullable: true })
+  // photos: Photo[]
 
   @ManyToMany((type) => Films, (films) => films.vehicles)
   @ApiProperty({ description: 'An array of Film that this vehicle has appeared in.', nullable: true })
@@ -72,10 +71,15 @@ export class Vehicles {
 
   @CreateDateColumn()
   @ApiProperty({ description: 'Record creation date', nullable: true })
-  created: string;
+  createdAt: string;
 
   @UpdateDateColumn()
   @ApiProperty({ description: 'Record update date', nullable: true })
-  edited: string;
+  updatedAt: string;
+
+  @DeleteDateColumn()
+  @ApiProperty({ description: 'for soft-delete Vehicle', nullable: true })
+  deletedAt?: Date;
+
 }
 

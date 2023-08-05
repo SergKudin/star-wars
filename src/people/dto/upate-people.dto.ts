@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { Transform } from "class-transformer"
 import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
+import { CreatePeopleDto } from "./create-people.dto"
 
 
 const descr = {
@@ -22,7 +22,7 @@ const descr = {
   edited: 'the ISO 8601 date format of the time that this resource was edited.',
 }
 
-export class UpdatePeopleDto {
+export class UpdatePeopleDto extends CreatePeopleDto {
   @ApiProperty({ description: 'People id', nullable: true })
   @IsString()
   @IsOptional()

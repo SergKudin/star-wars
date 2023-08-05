@@ -16,7 +16,9 @@ import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
     TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships]),
   ],
   controllers: [MigrationController],
-  providers: [MigrationService,],
+  providers: [
+    MigrationService,
+  ],
   exports: []
 })
 export class MigrationModule { }

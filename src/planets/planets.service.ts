@@ -1,14 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePlanetDto } from './dto/create-planet.dto';
 import { UpdatePlanetDto } from './dto/update-planet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { DeleteResult, In, IsNull, Not, Repository, UpdateResult } from 'typeorm';
 import { Planet } from './entities/planet.entity';
 import { Films } from 'src/films/entities/film.entity';
 import { People } from 'src/people/entities/people.entity';
 import { Species } from 'src/species/entities/species.entity';
 import { Starships } from 'src/starships/entities/starship.entity';
 import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
+import { SwapiResponse } from 'src/types/swapiResponse.type';
 
 @Injectable()
 export class PlanetsService {
@@ -27,81 +28,171 @@ export class PlanetsService {
     private readonly starshipsRepository: Repository<Starships>,
   ) { }
 
-
-  create(createPlanetDto: CreatePlanetDto) {
-    return 'This action adds a new planet';
+  query = {
+    select: {
+      planet_id: true,
+      name: true,
+      diameter: true,
+      rotation_period: true,
+      orbital_period: true,
+      gravity: true,
+      population: true,
+      climate: true,
+      terrain: true,
+      surface_water: true,
+      url: true,
+      createdAt: true,
+      updatedAt: true,
+      films: { film_id: true, title: true },
+      residents: { _id: true, name: true },
+      // photos: { photo_id: true, originalname: true },
+    },
+    relations: {
+      films: true,
+      residents: true,
+      // photos: true,
+    },
   }
 
 
-  async createPlanetWithoutRelations(createPlanetDto: CreatePlanetDto[]): Promise<Planet[]> {
+  async createPlanet(createPlanetDto: CreatePlanetDto): Promise<Planet> {
+    const existPlanet: Planet = await this.planetRepository.findOne({ where: { url: createPlanetDto.url } });
+    if (existPlanet)
+      throw new NotFoundException(`This Planet: ${createPlanetDto.name} with url: ${createPlanetDto.url} already exists`);
+
+    return this.savePlanetWithLinks(createPlanetDto);
+  }
+
+  async updatePlanet(id: string, updatePlanetDto: UpdatePlanetDto): Promise<Planet> {
+    const existPlanetUrl: Planet = await this.planetRepository.findOne({ where: { url: updatePlanetDto.url } });
+    if (!existPlanetUrl)
+      throw new NotFoundException(`Bad request! Check Your data: url ${updatePlanetDto.url} not found`);
+    if (existPlanetUrl.planet_id !== id)
+      throw new BadRequestException(`Bad request! Check Your data: found url ${existPlanetUrl.url} with id: ${existPlanetUrl.planet_id}`);
+
+    updatePlanetDto.planet_id = id;
+    return this.savePlanetWithLinks(updatePlanetDto);
+  }
+
+  async savePlanetWithLinks(planetData: CreatePlanetDto | UpdatePlanetDto): Promise<Planet> {
+    const { residents, films, ...rest } = planetData;
+
+    // Save the Planet object with no links    
+    const savedPlanet = await this.planetRepository.save(rest);
+
+    // Get instances of related objects from repositories & Establish links between objects    
+    // if (homeworld) savedPlanet.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
+    if (films) savedPlanet.films = await this.filmsRepository.find({ where: { url: In(films) } });
+    if (residents) savedPlanet.residents = await this.peopleRepository.find({ where: { url: In(residents) } });
+    // if (species) savedPlanet.species = await this.speciesRepository.find({ where: { url: In(species) } });
+    // if (starships) savedPlanet.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
+    // if (vehicles) savedPlanet.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
+
+    // Save the updated Planet object with the relationships set    
+    return this.planetRepository.save(savedPlanet);
+  }
+
+  async createPlanetObj(createPlanetDto: CreatePlanetDto[]): Promise<Planet[]> {
 
     const savedPlanets: Planet[] = [];
 
-    // Save Planets Objects Without Relationships    
+    // Save Planet Objects Without Relationships    
     for (let dto of createPlanetDto) {
-      const existPlanets = await this.planetRepository.findOne({ where: { url: dto.url } })
-      if (existPlanets)
-        throw new BadRequestException(`This Planets: ${dto.name} with url: ${dto.url} already exists`)
+      // const existPlanet: Planet = await this.planetRepository.findOne({ where: { url: dto.url } })
+      // if (existPlanet)
+      //   throw new BadRequestException(`This Planet: ${dto.name} with url: ${dto.url} already exists`)
+      // const { residents, films, ...rest } = dto;
 
-      const { residents, films, ...rest } = dto;
-
-      const savedPlanet = await this.planetRepository.save(rest);
-      savedPlanets.push(savedPlanet);
+      // const savedPlanet: Planet = await this.planetRepository.save(rest);
+      // savedPlanets.push(savedPlanet);
+      savedPlanets.push(await this.createPlanet(dto))
     }
     return savedPlanets;
   }
 
   async updatePlanetRelations(createPlanetDto: CreatePlanetDto[]): Promise<Planet[]> {
-    const savedPlanet: Planet[] = [];
+    const savedPlanets: Planet[] = [];
 
     for (const dto of createPlanetDto) {
 
-      const { residents, films, url } = dto;
-      let existingPlanet = await this.planetRepository.findOne({ where: { url } });
+      let existingPlanet: Planet = await this.planetRepository.findOne({ where: { url: dto.url } });
 
       if (!existingPlanet) {
         const { residents, films, ...rest } = dto
         existingPlanet = await this.planetRepository.save(rest);
         console.error(`Planet ${dto.name} not found. Create new data Planet`);
       }
-
-      existingPlanet.residents = await this.peopleRepository.find({ where: { url: In(residents) } });
-      existingPlanet.films = await this.filmsRepository.find({ where: { url: In(films) } });
-
-      const toSave = await this.planetRepository.save(existingPlanet);
-      savedPlanet.push(toSave);
-      // console.log('toSave Planet - ' + toSave.name)
+      savedPlanets.push(await this.savePlanetWithLinks(dto));
     }
-    return savedPlanet;
+    return savedPlanets;
   }
 
-
-
-
-  findAll() {
-    return `This action returns all planets`;
+  async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<Planet>> {
+    // limit - elements by page
+    // route = request.url
+    const { countStr }: { countStr: string } = await this.planetRepository
+      .createQueryBuilder('planet')
+      .select('COUNT(planet_id) AS countStr')
+      .getRawOne()
+    const count: number = +countStr
+    const indexStart: number = (page - 1) * pageLimit
+    route = process.env.IP + route.split('/').slice(0, -1).join('/') + '/'
+    const next: string = (page * pageLimit < count) ? route + (page + 1) : 'null'
+    const previous: string = (page < 2) ? 'null' : route + (page - 1)
+    const results: Planet[] = await this.planetRepository.find({
+      select: this.query.select,
+      relations: this.query.relations,
+      skip: indexStart,
+      take: pageLimit,
+    })
+    return { count, next, previous, results }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} planet`;
+  async getById(id: number): Promise<Planet> {
+    const existPlanet: Planet[] = await this.planetRepository.find({
+      select: this.query.select,
+      relations: this.query.relations,
+      where: { planet_id: id + '' }
+    })
+    if (!existPlanet)
+      throw new NotFoundException(`Bad request! Check You data: id ${id} not find`)
+    return existPlanet[0]
   }
 
-  update(id: number, updatePlanetDto: UpdatePlanetDto) {
-    return `This action updates a #${id} planet`;
+  async remove(id: number): Promise<UpdateResult> {
+    const existPlanet: Planet = await this.planetRepository.findOne({ where: { planet_id: id + '' } })
+    if (!existPlanet)
+      throw new NotFoundException(`Bad request! Check You data: id ${id} not find`)
+
+    return await this.planetRepository
+      .createQueryBuilder('planet')
+      .softDelete()
+      .where("planet_id = :id", { id: id })
+      .execute()
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} planet`;
+  async getListRemovedElements(): Promise<Planet[]> {
+    return await this.planetRepository.find({ where: { deletedAt: Not(IsNull()) }, withDeleted: true })
   }
 
-  async removeAll() {
-    console.log('removeAllPlanets !!!')
+  async restore(id: number): Promise<Planet> {
+    const result: UpdateResult = await this.planetRepository
+      .createQueryBuilder('planet')
+      .restore()
+      .where("planet_id = :id", { id: id })
+      .execute()
+    if (!result.affected)
+      throw new NotFoundException(`Bad request! Check You data: id ${id} not find`)
+    return await this.planetRepository.findOne({ where: { planet_id: id + '' } })
+  }
+
+  async removeAll(): Promise<DeleteResult> {
+    console.log('removeAllPlanet !!!')
     return await this.planetRepository
       .createQueryBuilder('planet')
       .delete()
       .from(Planet)
       .execute();
   }
-
 
 }

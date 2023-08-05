@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER } from '@nestjs/core';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PeopleModule } from './people/people.module';
@@ -11,9 +13,8 @@ import { VehiclesModule } from './vehicles/vehicles.module';
 import { SpeciesModule } from './species/species.module';
 import { PlanetsModule } from './planets/planets.module';
 import { MigrationModule } from './migration/migration.module';
-import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './all-exception.filter';
-import { PhotoModule } from './photo/photo.module';
+import { InterceptorModule } from './interceptors/interceptor.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { PhotoModule } from './photo/photo.module';
     SpeciesModule,
     PlanetsModule,
     MigrationModule,
-    PhotoModule,
+    // PhotoModule,
+    InterceptorModule,
   ],
   controllers: [AppController],
   providers: [

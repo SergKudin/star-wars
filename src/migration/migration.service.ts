@@ -41,18 +41,19 @@ export class MigrationService {
     private readonly speciesService: SpeciesService,
     private readonly vehiclesService: VehiclesService,
     private readonly starshipsService: StarshipsService,
-    @InjectRepository(People)
-    private readonly peopleRepository: Repository<People>,
-    @InjectRepository(Planet)
-    private readonly planetRepository: Repository<Planet>,
-    @InjectRepository(Films)
-    private readonly filmsRepository: Repository<Films>,
-    @InjectRepository(Species)
-    private readonly speciesRepository: Repository<Species>,
-    @InjectRepository(Vehicles)
-    private readonly vehiclesRepository: Repository<Vehicles>,
-    @InjectRepository(Starships)
-    private readonly starshipsRepository: Repository<Starships>,
+    // private readonly photoService: PhotoService,
+    // @InjectRepository(People)
+    // private readonly peopleRepository: Repository<People>,
+    // @InjectRepository(Planet)
+    // private readonly planetRepository: Repository<Planet>,
+    // @InjectRepository(Films)
+    // private readonly filmsRepository: Repository<Films>,
+    // @InjectRepository(Species)
+    // private readonly speciesRepository: Repository<Species>,
+    // @InjectRepository(Vehicles)
+    // private readonly vehiclesRepository: Repository<Vehicles>,
+    // @InjectRepository(Starships)
+    // private readonly starshipsRepository: Repository<Starships>,
   ) { }
 
   adrSwapi = process.env.SWAPI
@@ -107,45 +108,24 @@ export class MigrationService {
     return arr
   }
 
-  private createSwapiSummObjWithoutRelations = {
+  private createSwapiSummObj = {
     people: async (obj: CreatePeopleDto[]) => {
-      await this.peopleService.createPeopleWithoutRelations(obj)
+      await this.peopleService.createPeopleObj(obj)
     },
     planets: async (obj: CreatePlanetDto[]) => {
-      await this.planetsService.createPlanetWithoutRelations(obj)
+      await this.planetsService.createPlanetObj(obj)
     },
     films: async (obj: CreateFilmDto[]) => {
-      await this.filmService.createFilmWithoutRelations(obj)
+      await this.filmService.createFilmObj(obj)
     },
     species: async (obj: CreateSpeciesDto[]) => {
-      await this.speciesService.createSpeciesWithoutRelations(obj)
+      await this.speciesService.createSpeciesObj(obj)
     },
     vehicles: async (obj: CreateVehicleDto[]) => {
-      await this.vehiclesService.createVehicleWithoutRelations(obj)
+      await this.vehiclesService.createVehicleObj(obj)
     },
     starships: async (obj: CreateStarshipDto[]) => {
-      await this.starshipsService.createStarshipWithoutRelations(obj)
-    },
-  }
-
-  private updateSwapiSummObjRelations = {
-    people: async (obj: CreatePeopleDto[]) => {
-      await this.peopleService.updatePeopleRelations(obj)
-    },
-    planets: async (obj: CreatePlanetDto[]) => {
-      await this.planetsService.updatePlanetRelations(obj)
-    },
-    films: async (obj: CreateFilmDto[]) => {
-      await this.filmService.updateFilmRelations(obj)
-    },
-    species: async (obj: CreateSpeciesDto[]) => {
-      await this.speciesService.updateSpeciesRelations(obj)
-    },
-    vehicles: async (obj: CreateVehicleDto[]) => {
-      await this.vehiclesService.updateVehicleRelations(obj)
-    },
-    starships: async (obj: CreateStarshipDto[]) => {
-      await this.starshipsService.updateStarshipRelations(obj)
+      await this.starshipsService.createStarshipObj(obj)
     },
   }
 
@@ -167,15 +147,17 @@ export class MigrationService {
   }
 
 
-  async createAllObjectsToDB() {
-
+  async createAllObjectsToDB(): Promise<string[]> {
+    const log: string[] = []
     const remove: string = process.env.CLEAR_DB_BEFORE_WRITING_DATA_FROM_SWAPI ?? 'true'
     const clearDB: boolean = (remove === 'true') ? true : false
     await this.clearDB(clearDB)
+    // await this.photoService.removeAll()
 
     // for start test
     if (this.useTestData) {
-      console.log(`Use test data`)
+      // console.log(`Use test data`)
+      log.push(`Use test data`)
       this.migrationData.set('people', migrPeopleData as unknown as CreatePeopleDto[])
       this.migrationData.set('planets', migrPlanetsData as unknown as CreatePlanetDto[])
       this.migrationData.set('films', migrFilmsData as unknown as CreateFilmDto[])
@@ -183,26 +165,29 @@ export class MigrationService {
       this.migrationData.set('vehicles', migrVihiclesData as unknown as CreateVehicleDto[])
       this.migrationData.set('starships', migrStarshipsData as unknown as CreateStarshipDto[])
     } else {
+      log.push(`Use data SWAPI`)
       await this.getAllDataFromSwapi()
     }
 
     for (const sourse of this.migrationData) {
       const key = sourse[0];
-      console.log(`Start creating ${key}`);
+      // console.log(`Start creating ${key}`);
+      log.push(`Start creating ${key}`)
       if (key) {
-        await this.createSwapiSummObjWithoutRelations[key](sourse[1])
-        console.log(` While creating ${key} success`);
+        await this.createSwapiSummObj[key](sourse[1])
+        // console.log(` While creating ${key} success`);
+        log.push(` While creating ${key} success`)
       }
     }
-
-    for (const sourse of this.migrationData) {
-      const key = sourse[0];
-      console.log(`Start creating relations ${key}`);
-      if (key) {
-        await this.updateSwapiSummObjRelations[key](sourse[1])
-        console.log(` While creating relations ${key} success`);
-      }
-    }
+    return log
+    // for (const sourse of this.migrationData) {
+    //   const key = sourse[0];
+    //   console.log(`Start creating relations ${key}`);
+    //   if (key) {
+    //     await this.updateSwapiSummObjRelations[key](sourse[1])
+    //     console.log(` While creating relations ${key} success`);
+    //   }
+    // }
 
   }
 

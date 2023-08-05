@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { IsArray, IsNumber, IsString } from "class-validator"
 import { Films } from "src/films/entities/film.entity"
-import { Photo } from "src/photo/entities/photo.entity"
 import { Planet } from "src/planets/entities/planet.entity"
 import { Species } from "src/species/entities/species.entity"
 import { Starships } from "src/starships/entities/starship.entity"
@@ -55,9 +54,9 @@ export class People {
   @IsString()
   skin_color: string
 
-  @OneToMany(() => Photo, (photo) => photo.people)
-  @ApiProperty({ description: 'An array of Photos that are in this person', nullable: true })
-  photos: Photo[]
+  // @OneToMany(() => Photo, (photo) => photo.people)
+  // @ApiProperty({ description: 'An array of Photos that are in this person', nullable: true })
+  // photos: Photo[]
 
   @ManyToOne((type) => Planet, (planet) => planet.residents, { cascade: true, })
   @JoinColumn({ name: 'planet_id' })

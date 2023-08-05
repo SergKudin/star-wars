@@ -1,65 +1,93 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInterceptors, ParseIntPipe, Req } from '@nestjs/common';
 import { PlanetsService } from './planets.service';
 import { CreatePlanetDto } from './dto/create-planet.dto';
 import { UpdatePlanetDto } from './dto/update-planet.dto';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Planet } from './entities/planet.entity';
+import { DataInterceptor } from 'src/interceptors/data.interceptor';
+import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { ResultInterceptor } from 'src/interceptors/result.interceptor';
+import { DeleteResult } from 'typeorm';
 
 @ApiTags('Planets')
 @Controller('planets')
 export class PlanetsController {
   constructor(private readonly planetsService: PlanetsService) { }
 
-  @ApiOperation({ summary: 'Create a Planet' })
-  @ApiResponse({ status: HttpStatus.CREATED, description: 'Success', type: CreatePlanetDto })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @Post()
-  create(@Body() createPlanetDto: CreatePlanetDto) {
-    return this.planetsService.create(createPlanetDto);
+  @UseInterceptors(DataInterceptor)
+  @ApiOperation({ summary: "Create a Planet. Links with other objects are made using the url field" })
+  @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  async create(@Body() createPlanetDto: CreatePlanetDto): Promise<Planet> {
+    return await this.planetsService.createPlanet(createPlanetDto)
   }
 
-  @ApiOperation({ summary: 'Returns all available planets' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Planet, isArray: true })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @Get()
-  findAll() {
-    return this.planetsService.findAll();
-  }
-
-  @ApiOperation({ summary: 'Returns a planet with the specified id' })
-  @ApiParam({ name: 'id', required: true, description: 'Planet identifier' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Planet })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.planetsService.findOne(+id);
-  }
-
-  @ApiOperation({ summary: 'Updates a planet with the specified id' })
-  @ApiParam({ name: 'id', required: true, description: 'Planet identifier' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: UpdatePlanetDto })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlanetDto: UpdatePlanetDto) {
-    return this.planetsService.update(+id, updatePlanetDto);
-  }
-
-  @ApiOperation({ summary: 'Deletes a planet with the specified id' })
-  @ApiParam({ name: 'id', required: true, description: 'Planet identifier' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @Delete('remove/:id')
-  remove(@Param('id') id: string) {
-    return this.planetsService.remove(+id);
-  }
-
-  @ApiOperation({ summary: "Deletes all Planets data" })
+  @Get('list-removed')
+  @UseInterceptors(DataInterceptor)
+  @ApiOperation({ summary: "returns a list of removed elements" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  @Delete('removeAll')
-  removeAll() {
-    return this.planetsService.removeAll()
+  removedElements() {
+    return this.planetsService.getListRemovedElements();
+  }
+
+  @Get(':id')
+  @UseInterceptors(DataInterceptor)
+  @ApiOperation({ summary: "Returns a note with specified id" })
+  @ApiParam({ name: "id", required: true, description: "Planet identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  getById(@Param('id', ParseIntPipe) id: number) {
+    return this.planetsService.getById(id)
+  }
+
+  @Get('page/:page')
+  @UseInterceptors(DataInterceptor)
+  @ApiOperation({ summary: "Returns the specified page number with size PAGE_LIMIT" })
+  @ApiParam({ name: "page", required: true, description: "Page number" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  getAllWithPagination(@Req() request: Request, @Param('page', ParseIntPipe) page: number): Promise<SwapiResponse<Planet>> {
+    return this.planetsService.getAllWithPagination(request.url, page, +process.env.PAGE_LIMIT)
+  }
+
+  @Patch(':id')
+  @UseInterceptors(DataInterceptor)
+  @ApiOperation({ summary: "Updates a Planet with specified id" })
+  @ApiParam({ name: "id", required: true, description: "Planet identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  update(@Body() updatePlanetDto: UpdatePlanetDto, @Param('id', ParseIntPipe) id: string): Promise<Planet> {
+    return this.planetsService.updatePlanet(id, updatePlanetDto)
+  }
+
+  @Delete('remove/:id')
+  @UseInterceptors(ResultInterceptor)
+  @ApiOperation({ summary: "Soft-deletes a Planet with specified id" })
+  @ApiParam({ name: "id", required: true, description: "Planet identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.planetsService.remove(id)
+  }
+
+  // @UseGuards(AuthGuard("api-key"))
+  @Post('restore/:id')
+  @UseInterceptors(DataInterceptor)
+  @ApiOperation({ summary: "Restores records of Planet with the specified ID" })
+  @ApiParam({ name: "id", required: true, description: "Planet identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  restoreSoftDelete(@Param('id', ParseIntPipe) id: number) {
+    return this.planetsService.restore(id)
   }
 
 }

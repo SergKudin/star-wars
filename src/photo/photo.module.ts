@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { PhotoService } from './photo.service';
 import { PhotoController } from './photo.controller';
 import { Photo } from './entities/photo.entity';
@@ -13,12 +13,14 @@ import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships, Photo]),
+    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships]),
     MulterModule.register({
       dest: 'uploads/', // Path to save downloaded files
     }),
   ],
+  providers: [PhotoService],
   controllers: [PhotoController],
-  providers: [PhotoService]
+  // exports: [PhotoService],
 })
+
 export class PhotoModule { }
