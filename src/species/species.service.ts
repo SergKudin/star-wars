@@ -46,12 +46,12 @@ export class SpeciesService {
       films: { film_id: true, title: true },
       people: { _id: true, name: true },
       homeworld: { planet_id: true, name: true },
-      // photos: { photo_id: true, originalname: true },
+      photos: { photo_id: true, originalname: true },
     },
     relations: {
       films: true,
       people: true,
-      // photos: true,
+      photos: true,
       homeworld: true,
     },
   }

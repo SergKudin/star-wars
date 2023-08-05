@@ -8,11 +8,12 @@ import { People } from 'src/people/entities/people.entity';
 import { Planet } from 'src/planets/entities/planet.entity';
 import { Species } from 'src/species/entities/species.entity';
 import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
+import { Photo } from 'src/photo/entities/photo.entity';
 
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships,]),
+    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships, Photo]),
   ],
   controllers: [StarshipsController],
   providers: [StarshipsService],

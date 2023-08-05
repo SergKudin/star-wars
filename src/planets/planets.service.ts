@@ -45,12 +45,12 @@ export class PlanetsService {
       updatedAt: true,
       films: { film_id: true, title: true },
       residents: { _id: true, name: true },
-      // photos: { photo_id: true, originalname: true },
+      photos: { photo_id: true, originalname: true },
     },
     relations: {
       films: true,
       residents: true,
-      // photos: true,
+      photos: true,
     },
   }
 

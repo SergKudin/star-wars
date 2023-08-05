@@ -48,11 +48,11 @@ export class PeopleService {
       starships: { starship_id: true, name: true },
       vehicles: { vehicle_id: true, name: true },
       homeworld: { planet_id: true, name: true },
-      // photos: { photo_id: true, originalname: true },
+      photos: { photo_id: true, originalname: true },
     },
     relations: {
       films: true,
-      // photos: true,
+      photos: true,
       homeworld: true,
       species: true,
       starships: true,

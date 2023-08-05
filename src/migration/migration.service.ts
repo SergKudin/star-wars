@@ -1,24 +1,16 @@
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
 import { firstValueFrom } from 'rxjs'
-import { Repository } from 'typeorm'
 
 import { CreateFilmDto } from 'src/films/dto/create-film.dto'
-import { Films } from 'src/films/entities/film.entity'
 import { CreatePeopleDto } from 'src/people/dto/create-people.dto'
-import { People } from 'src/people/entities/people.entity'
 import { PeopleService } from 'src/people/people.service'
 import { CreatePlanetDto } from 'src/planets/dto/create-planet.dto'
-import { Planet } from 'src/planets/entities/planet.entity'
 import { CreateSpeciesDto } from 'src/species/dto/create-species.dto'
-import { Species } from 'src/species/entities/species.entity'
 import { CreateStarshipDto } from 'src/starships/dto/create-starship.dto'
-import { Starships } from 'src/starships/entities/starship.entity'
 import { SwapiResponse } from 'src/types/swapiResponse.type'
 import { SwapiSummObj } from 'src/types/swapiSummObj.type'
 import { CreateVehicleDto } from 'src/vehicles/dto/create-vehicle.dto'
-import { Vehicles } from 'src/vehicles/entities/vehicle.entity'
 import { FilmsService } from 'src/films/films.service'
 import { PlanetsService } from 'src/planets/planets.service'
 import { SpeciesService } from 'src/species/species.service'
@@ -30,6 +22,7 @@ import { migrPlanetsData } from './data-for-test/migration.testPlanet'
 import { migrSpeciesData } from './data-for-test/migration.testSpecies'
 import { migrStarshipsData } from './data-for-test/migration.testStarships'
 import { migrVihiclesData } from './data-for-test/migration.testVihicles'
+import { PhotoService } from 'src/photo/photo.service'
 
 @Injectable()
 export class MigrationService {
@@ -41,19 +34,7 @@ export class MigrationService {
     private readonly speciesService: SpeciesService,
     private readonly vehiclesService: VehiclesService,
     private readonly starshipsService: StarshipsService,
-    // private readonly photoService: PhotoService,
-    // @InjectRepository(People)
-    // private readonly peopleRepository: Repository<People>,
-    // @InjectRepository(Planet)
-    // private readonly planetRepository: Repository<Planet>,
-    // @InjectRepository(Films)
-    // private readonly filmsRepository: Repository<Films>,
-    // @InjectRepository(Species)
-    // private readonly speciesRepository: Repository<Species>,
-    // @InjectRepository(Vehicles)
-    // private readonly vehiclesRepository: Repository<Vehicles>,
-    // @InjectRepository(Starships)
-    // private readonly starshipsRepository: Repository<Starships>,
+    private readonly photoService: PhotoService,
   ) { }
 
   adrSwapi = process.env.SWAPI
@@ -129,9 +110,10 @@ export class MigrationService {
     },
   }
 
-  async clearDB(clearDB: boolean) {
+  async clearDB(clearDB: boolean, log: string[]): Promise<string[]> {
     if (!clearDB) return
     console.log(`ATTENTION!!! Database cleanup in progress!`)
+    log.push(`ATTENTION!!! Database cleanup in progress!`)
     let clear: number
     do {
       try {
@@ -144,15 +126,19 @@ export class MigrationService {
         clear += (await this.planetsService.removeAll()).affected
       } catch (e) { }
     } while (clear > 0)
+    await this.photoService.removeAll()
+    console.log(`All data is deleted!`)
+    log.push(`All data is deleted!`)
+    return log
   }
 
 
-  async createAllObjectsToDB(): Promise<string[]> {
-    const log: string[] = []
+  async createAllObjectsToDB(): Promise<{ message: string[] }> {
+    let log: string[] = []
     const remove: string = process.env.CLEAR_DB_BEFORE_WRITING_DATA_FROM_SWAPI ?? 'true'
     const clearDB: boolean = (remove === 'true') ? true : false
-    await this.clearDB(clearDB)
-    // await this.photoService.removeAll()
+    log.push(`Removing all data from the database: ${clearDB}`)
+    log = await this.clearDB(clearDB, log)
 
     // for start test
     if (this.useTestData) {
@@ -179,15 +165,7 @@ export class MigrationService {
         log.push(` While creating ${key} success`)
       }
     }
-    return log
-    // for (const sourse of this.migrationData) {
-    //   const key = sourse[0];
-    //   console.log(`Start creating relations ${key}`);
-    //   if (key) {
-    //     await this.updateSwapiSummObjRelations[key](sourse[1])
-    //     console.log(` While creating relations ${key} success`);
-    //   }
-    // }
+    return { message: log }
 
   }
 

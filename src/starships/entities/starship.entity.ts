@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Films } from "src/films/entities/film.entity";
 import { People } from "src/people/entities/people.entity";
+import { Photo } from "src/photo/entities/photo.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -61,9 +62,9 @@ export class Starships {
   @ApiProperty({ description: 'The maximum period of consumables supply for the starship without needing to resupply', nullable: true })
   consumables: string;
 
-  // @OneToMany(() => Photo, (photo) => photo.starships)
-  // @ApiProperty({ description: 'An array of Photos that are in this starships', nullable: true })
-  // photos: Photo[]
+  @OneToMany(() => Photo, (photo) => photo.starships)
+  @ApiProperty({ description: 'An array of Photos that are in this starships', nullable: true })
+  photos: Photo[]
 
   @ManyToMany((type) => Films, (film) => film.starships)
   @ApiProperty({ description: 'An array of Film that this starship has appeared in', nullable: true })

@@ -33,35 +33,35 @@ export class Photo {
   @ApiProperty({ description: 'image file size', nullable: true })
   size: number;
 
-  // @ManyToOne((type) => Films, (film) => film.photos, { cascade: true, })
-  // @JoinColumn({ name: 'film_id' })
-  // @ApiProperty({ description: 'An array of Photos that are in this film', nullable: true })
-  // film: Films
+  @ManyToOne((type) => Films, (film) => film.photos, { cascade: true, })
+  @JoinColumn({ name: 'film_id' })
+  @ApiProperty({ description: 'An array of Photos that are in this film', nullable: true })
+  film: Films
 
-  // @ManyToOne(() => People, (people) => people.photos)
-  // @JoinColumn({ name: 'people_id' })
-  // @ApiProperty({ description: 'An array of Photos that are in this person', nullable: true })
-  // people: People
+  @ManyToOne(() => People, (people) => people.photos)
+  @JoinColumn({ name: 'people_id' })
+  @ApiProperty({ description: 'An array of Photos that are in this person', nullable: true })
+  people: People
 
-  // @ManyToOne(() => Planet, (planet) => planet.photos)
-  // @JoinColumn({ name: 'planet_id' })
-  // @ApiProperty({ description: 'An array of Photos that are in this Planet', nullable: true })
-  // planet: Planet
+  @ManyToOne(() => Planet, (planet) => planet.photos)
+  @JoinColumn({ name: 'planet_id' })
+  @ApiProperty({ description: 'An array of Photos that are in this Planet', nullable: true })
+  planet: Planet
 
-  // @ManyToOne(() => Species, (species) => species.photos)
-  // @JoinColumn({ name: 'species_id' })
-  // @ApiProperty({ description: 'An array of Photos that are in this species', nullable: true })
-  // species: Species
+  @ManyToOne(() => Species, (species) => species.photos)
+  @JoinColumn({ name: 'species_id' })
+  @ApiProperty({ description: 'An array of Photos that are in this species', nullable: true })
+  species: Species
 
-  // @ManyToOne(() => Starships, (starships) => starships.photos)
-  // @JoinColumn({ name: 'starships_id' })
-  // @ApiProperty({ description: 'An array of Photos that are in this starships', nullable: true })
-  // starships: Starships
+  @ManyToOne(() => Starships, (starships) => starships.photos)
+  @JoinColumn({ name: 'starships_id' })
+  @ApiProperty({ description: 'An array of Photos that are in this starships', nullable: true })
+  starships: Starships
 
-  // @ManyToOne(() => Vehicles, (vehicles) => vehicles.photos)
-  // @JoinColumn({ name: 'vehicles_id' })
-  // @ApiProperty({ description: 'An array of Photos that are in this Vehicles', nullable: true })
-  // vehicles: Vehicles
+  @ManyToOne(() => Vehicles, (vehicles) => vehicles.photos)
+  @JoinColumn({ name: 'vehicles_id' })
+  @ApiProperty({ description: 'An array of Photos that are in this Vehicles', nullable: true })
+  vehicles: Vehicles
 
   @CreateDateColumn()
   @ApiProperty({ description: 'Record creation date', nullable: true })

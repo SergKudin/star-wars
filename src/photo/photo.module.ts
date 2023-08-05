@@ -11,16 +11,17 @@ import { Starships } from 'src/starships/entities/starship.entity';
 import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
 import { MulterModule } from '@nestjs/platform-express';
 
+@Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships]),
+    TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships, Photo]),
     MulterModule.register({
       dest: 'uploads/', // Path to save downloaded files
     }),
   ],
-  providers: [PhotoService],
   controllers: [PhotoController],
-  // exports: [PhotoService],
+  providers: [PhotoService],
+  exports: [PhotoService],
 })
 
 export class PhotoModule { }

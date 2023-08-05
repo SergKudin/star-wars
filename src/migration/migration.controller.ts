@@ -102,12 +102,11 @@ export class MigrationController {
   }
 
   @Post('createAll')
-  @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Create all objects to DB" })
   @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  async create() {
+  async create(): Promise<{ message: string[] }> {
     return await this.migrationService.createAllObjectsToDB()
   }
 

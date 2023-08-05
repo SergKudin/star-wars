@@ -45,11 +45,11 @@ export class FilmsService {
       vehicles: { vehicle_id: true, name: true },
       characters: { _id: true, name: true },
       planets: { planet_id: true, name: true },
-      // photos: { photo_id: true, originalname: true },
+      photos: { photo_id: true, originalname: true },
     },
     relations: {
       characters: true,
-      // photos: true,
+      photos: true,
       planets: true,
       species: true,
       starships: true,

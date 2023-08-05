@@ -49,12 +49,12 @@ export class VehiclesService {
       updatedAt: true,
       films: { film_id: true, title: true },
       pilots: { _id: true, name: true },
-      // photos: { photo_id: true, originalname: true },
+      photos: { photo_id: true, originalname: true },
     },
     relations: {
       films: true,
       pilots: true,
-      // photos: true,
+      photos: true,
     },
   }
 

@@ -15,6 +15,7 @@ import { PlanetsModule } from './planets/planets.module';
 import { MigrationModule } from './migration/migration.module';
 import { AllExceptionsFilter } from './all-exception.filter';
 import { InterceptorModule } from './interceptors/interceptor.module';
+import { PhotoModule } from './photo/photo.module';
 
 @Module({
   imports: [
@@ -43,7 +44,7 @@ import { InterceptorModule } from './interceptors/interceptor.module';
     SpeciesModule,
     PlanetsModule,
     MigrationModule,
-    // PhotoModule,
+    PhotoModule,
     InterceptorModule,
   ],
   controllers: [AppController],
