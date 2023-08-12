@@ -20,7 +20,8 @@ services:
     image: 4docker
     container_name: 4docker
     ports:
-      - 3000:3000
+      - 4000:4000
+    build: .
     networks:
       - my-network
     mem_limit: 256m

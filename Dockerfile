@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y python3 make g++
 RUN npm rebuild bcrypt --build-from-source
 
 # Define the port that will be used in the container
-EXPOSE 3000
+# EXPOSE 3000
 
 # Run the application when the container starts
 CMD [ "npm", "run", "start:dev" ]

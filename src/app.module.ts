@@ -16,23 +16,19 @@ import { MigrationModule } from './migration/migration.module';
 import { AllExceptionsFilter } from './all-exception.filter';
 import { InterceptorModule } from './interceptors/interceptor.module';
 import { PhotoModule } from './photo/photo.module';
+import { AppConfig, DatabaseConfig } from './config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+      load: [AppConfig, DatabaseConfig],
+    }),
     TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DATABASE_HOST'),
-        port: +configService.get('DATABASE_PORT'),
-        username: configService.get('DATABASE_USER'),
-        password: configService.get('DATABASE_PASS'),
-        database: configService.get('DATABASE_NAME'),
-        // autoLoadEntities: true,
-        // insecureAuth: true,
-        // debug: true,
-        entities: [__dirname + '/**/*.entity{.js, .ts}'],
-        synchronize: true,
+        ...configService.get('database'),
       }),
       inject: [ConfigService]
     }),

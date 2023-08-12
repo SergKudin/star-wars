@@ -102,13 +102,6 @@ export class PeopleService {
 
     // Save People Objects Without Relationships    
     for (let dto of createPeopleDto) {
-      // const existPeople: People = await this.peopleRepository.findOne({ where: { url: dto.url } })
-      // if (existPeople)
-      //   throw new BadRequestException(`This People: ${dto.name} with url: ${dto.url} already exists`)
-      // const { homeworld, films, species, vehicles, starships, ...rest } = dto;
-
-      // const savedPerson: People = await this.peopleRepository.save(rest);
-      // savedPeople.push(savedPerson);
       savedPeople.push(await this.createPeople(dto))
     }
     return savedPeople;
@@ -158,7 +151,8 @@ export class PeopleService {
       relations: this.query.relations,
       where: { _id: id + '' }
     })
-    if (!existPeople)
+    // console.log(existPeople.length > 0)
+    if (existPeople.length === 0)
       throw new NotFoundException(`Bad request! Check You data: id ${id} not find`)
     return existPeople[0]
   }

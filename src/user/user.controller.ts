@@ -12,12 +12,12 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   // @UseGuards(AuthGuard("api-key"))
+  @Post()
   @ApiOperation({ summary: "Create a User" })
   @ApiResponse({ status: HttpStatus.CREATED, description: "Success", type: CreateUserDto })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @UsePipes(new ValidationPipe())
-  @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -34,12 +34,12 @@ export class UserController {
   // }
 
   // @UseGuards(AuthGuard("api-key"))
+  @Get(':id')
   @ApiOperation({ summary: "Returns a note with specified id" })
   @ApiParam({ name: "id", required: true, description: "User identifier" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: User })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }

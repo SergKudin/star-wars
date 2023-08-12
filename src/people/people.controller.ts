@@ -8,7 +8,7 @@ import { SwapiResponse } from 'src/types/swapiResponse.type';
 import { People } from './entities/people.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
-import { DeleteResult } from 'typeorm';
+import { MyResponse } from 'src/types/myResponse.type';
 
 @ApiTags('People')
 // @ApiSecurity("X-API-KEY", ["X-API-KEY"]) 
