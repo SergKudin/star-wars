@@ -10,17 +10,20 @@ import { Species } from 'src/species/entities/species.entity';
 import { Starships } from 'src/starships/entities/starship.entity';
 import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
 import { MulterModule } from '@nestjs/platform-express';
+import { S3Module } from 'src/s3/s3.module';
+import { S3Service } from 'src/s3/s3.service';
 
 @Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([People, Planet, Films, Species, Vehicles, Starships, Photo]),
-    MulterModule.register({
-      dest: 'uploads/', // Path to save downloaded files
-    }),
+    // MulterModule.register({
+    //   dest: 'uploads/', // Path to save downloaded files
+    // }),
+    S3Module,
   ],
   controllers: [PhotoController],
-  providers: [PhotoService],
+  providers: [PhotoService, S3Service],
   exports: [PhotoService],
 })
 

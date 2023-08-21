@@ -9,7 +9,7 @@ import { Starships } from 'src/starships/entities/starship.entity';
 import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
 import { DeleteResult, In, IsNull, Not, Repository, UpdateResult } from 'typeorm';
 import { Films } from './entities/film.entity';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 
 @Injectable()
 export class FilmsService {

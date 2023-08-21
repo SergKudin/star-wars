@@ -1,20 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpStatus, UsePipes, ValidationPipe, UseGuards, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { SkipAuth } from 'src/auth/decorators/skip-auth.decorators';
 import { User } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('User')
-// @ApiSecurity("X-API-KEY", ["X-API-KEY"]) 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
-  // @UseGuards(AuthGuard("api-key"))
+  @SkipAuth()
   @Post()
   @ApiOperation({ summary: "Create a User" })
-  @ApiResponse({ status: HttpStatus.CREATED, description: "Success", type: CreateUserDto })
+  @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
   @UsePipes(new ValidationPipe())
@@ -22,47 +23,38 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  // // @UseGuards(AuthGuard("api-key"))
-  // @ApiOperation({ summary: "Returns all available records of Users" })
-  // // @ApiQuery({ name: "userId", required: true, description: "User identifier" })
-  // @ApiResponse({ status: HttpStatus.OK, description: "Success", type: User, isArray: true })
-  // @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
-  // @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
-
-  // @UseGuards(AuthGuard("api-key"))
-  @Get(':id')
-  @ApiOperation({ summary: "Returns a note with specified id" })
-  @ApiParam({ name: "id", required: true, description: "User identifier" })
-  @ApiResponse({ status: HttpStatus.OK, description: "Success", type: User })
+  @ApiBearerAuth('jwt')
+  @Get(':email')
+  @ApiOperation({ summary: "Returns a note with specified email. A record is created with the type 'user' only" })
+  @ApiParam({ name: "email", required: true, description: "User identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('email') email: string): Promise<User> {
+    const { password, ...rest } = await this.userService.findOne(email);
+    return { ...rest }
   }
 
-  // // @UseGuards(AuthGuard("api-key"))
-  // @ApiOperation({ summary: "Updates a User with specified id" })
-  // @ApiParam({ name: "id", required: true, description: "User identifier" })
-  // @ApiResponse({ status: HttpStatus.OK, description: "Success", type: UpdateUserDto })
-  // @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
-  // @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(+id, updateUserDto);
-  // }
+  @ApiBearerAuth('jwt')
+  @Patch(':id')
+  @ApiOperation({ summary: "Update the note with the specified id. Allows you to change the user's role. The password remains unchanged!" })
+  @ApiParam({ name: "id", required: true, description: "User identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  async update(@Body() updateUserDto: UpdateUserDto, @Param('id') id: string): Promise<User> {
+    return await this.userService.update(updateUserDto, id);
+  }
 
-  // // @UseGuards(AuthGuard("api-key"))
-  // @ApiOperation({ summary: "Deletes a User with specified id" })
-  // @ApiParam({ name: "id", required: true, description: "User identifier" })
-  // @ApiResponse({ status: HttpStatus.OK, description: "Success" })
-  // @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
-  // @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
+  @ApiBearerAuth('jwt')
+  @Patch('passUpd/:id')
+  @ApiOperation({ summary: "User password update" })
+  @ApiParam({ name: "id", required: true, description: "User identifier" })
+  @ApiResponse({ status: HttpStatus.OK, description: "Success" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
+  async updatePass(@Body() updateUserDto: UpdateUserDto, @Param('id') id: string): Promise<User> {
+    return await this.userService.update(updateUserDto, id);
+  }
+
 }

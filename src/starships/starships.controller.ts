@@ -2,14 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseInt
 import { StarshipsService } from './starships.service';
 import { CreateStarshipDto } from './dto/create-starship.dto';
 import { UpdateStarshipDto } from './dto/update-starship.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Starships } from './entities/starship.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
 import { DeleteResult } from 'typeorm';
 
 @ApiTags('Starships')
+@ApiBearerAuth('jwt')
 @Controller('starships')
 export class StarshipsController {
   constructor(private readonly starshipsService: StarshipsService) { }
@@ -78,7 +79,6 @@ export class StarshipsController {
     return this.starshipsService.remove(id)
   }
 
-  // @UseGuards(AuthGuard("api-key"))
   @Post('restore/:id')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Starship with the specified ID" })

@@ -4,44 +4,68 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UserLogin } from 'src/types/user-login.type';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 
 @Injectable()
 export class UserService {
 
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) { }
 
-  async create(createUserDto: CreateUserDto) {
-    const existUser = await this.userRepository.findOne({
+  async create(createUserDto: CreateUserDto): Promise<UserLogin> {
+    const existUser: User = await this.userRepository.findOne({
       where: {
         email: createUserDto.email
       }
     })
     if (existUser) throw new BadRequestException('This email already exists')
 
-    const user = await this.userRepository.save({
+    const { id, email } = await this.userRepository.save({
       email: createUserDto.email,
-      password: await bcrypt.hash(createUserDto.password, +process.env.SALT_OR_ROUNDS)
+      password: await bcrypt.hash(createUserDto.password, +process.env.SALT_OR_ROUNDS),
+      role: 'user'
     })
-
-    return { user };
+    const token = await this.jwtService.signAsync({ id, email })
+    return { id, email, token }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(email: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({ where: { email } })
+    return user
   }
 
-  // findAll() {
-  //   return `This action returns all user`;
-  // }
+  async update(updateUserDto: UpdateUserDto, userId: string): Promise<User> {
+    const existUser: User = await this.userRepository.findOne({
+      where: {
+        id: userId
+      }
+    })
+    if (!existUser) throw new BadRequestException('This user does not exist')
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+    existUser.email = updateUserDto.email
+    existUser.role = updateUserDto.role
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
+    const { password, ...rest } = await this.userRepository.save(existUser)
+    return { ...rest }
+  }
+
+  async updatePass(updateUserDto: UpdateUserDto, userId: string): Promise<User> {
+    const existUser: User = await this.userRepository.findOne({
+      where: {
+        id: userId
+      }
+    })
+    if (!existUser) throw new BadRequestException('This user does not exist')
+
+    existUser.password = await bcrypt.hash(updateUserDto.password, +process.env.SALT_OR_ROUNDS)
+
+    const { password, ...rest } = await this.userRepository.save(existUser)
+    return { ...rest }
+  }
+
 }

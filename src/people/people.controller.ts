@@ -1,18 +1,18 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Req, UseInterceptors, } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Req, UseGuards, UseInterceptors, } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreatePeopleDto } from './dto/create-people.dto';
 import { UpdatePeopleDto } from './dto/upate-people.dto';
 import { PeopleService } from './people.service';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 import { People } from './entities/people.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
-import { MyResponse } from 'src/types/myResponse.type';
+import { MyResponse } from 'src/types/my-response.type';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('People')
-// @ApiSecurity("X-API-KEY", ["X-API-KEY"]) 
-// // <----- Авторизация через Swagger 
+@ApiBearerAuth('jwt')
 @Controller('people')
 export class PeopleController {
 
@@ -82,7 +82,6 @@ export class PeopleController {
     return this.peopleService.remove(id)
   }
 
-  // @UseGuards(AuthGuard("api-key"))
   @Post('restore/:id')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of people with the specified ID" })

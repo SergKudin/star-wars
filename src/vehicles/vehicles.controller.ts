@@ -2,14 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseInt
 import { VehiclesService } from './vehicles.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Vehicles } from './entities/vehicle.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
-import { DeleteResult } from 'typeorm';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 
 @ApiTags('Vehicles')
+@ApiBearerAuth('jwt')
 @Controller('vehicles')
 export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) { }
@@ -78,7 +78,6 @@ export class VehiclesController {
     return this.vehiclesService.remove(id)
   }
 
-  // @UseGuards(AuthGuard("api-key"))
   @Post('restore/:id')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Vehicle with the specified ID" })

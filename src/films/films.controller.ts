@@ -2,14 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseInt
 import { FilmsService } from './films.service';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Films } from './entities/film.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
 import { DeleteResult } from 'typeorm';
 
 @ApiTags('Films')
+@ApiBearerAuth('jwt')
 @Controller('films')
 export class FilmsController {
   constructor(private readonly filmsService: FilmsService) { }
@@ -78,7 +79,6 @@ export class FilmsController {
     return this.filmsService.remove(id)
   }
 
-  // @UseGuards(AuthGuard("api-key"))
   @Post('restore/:id')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Film with the specified ID" })

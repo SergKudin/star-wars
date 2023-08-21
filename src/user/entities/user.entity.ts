@@ -5,11 +5,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export class User {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'User id', nullable: true })
-  id: number;
-
-  // @Column()
-  // @ApiProperty({ description: 'User name', nullable: true })
-  // name: string;
+  id: string;
 
   @Column()
   @ApiProperty({ description: 'User email', nullable: true })
@@ -17,7 +13,11 @@ export class User {
 
   @Column()
   @ApiProperty({ description: 'User password', nullable: true })
-  password: string;
+  password?: string;
+
+  @Column()
+  @ApiProperty({ description: 'User role', nullable: false })
+  role: 'admin' | 'user';
 
   @CreateDateColumn()
   @ApiProperty({ description: 'Date User created', nullable: true })

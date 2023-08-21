@@ -9,7 +9,7 @@ import { People } from 'src/people/entities/people.entity';
 import { Planet } from 'src/planets/entities/planet.entity';
 import { Species } from 'src/species/entities/species.entity';
 import { Starships } from 'src/starships/entities/starship.entity';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 
 @Injectable()
 export class VehiclesService {

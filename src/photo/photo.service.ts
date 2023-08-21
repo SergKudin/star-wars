@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { UpdatePhotoDto } from './dto/update-photo.dto';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 import { Photo } from './entities/photo.entity';
 import { Films } from 'src/films/entities/film.entity';
 import { People } from 'src/people/entities/people.entity';
@@ -13,6 +13,7 @@ import { Planet } from 'src/planets/entities/planet.entity';
 import { Species } from 'src/species/entities/species.entity';
 import { Starships } from 'src/starships/entities/starship.entity';
 import { Vehicles } from 'src/vehicles/entities/vehicle.entity';
+import { S3Service } from 'src/s3/s3.service';
 
 @Injectable()
 export class PhotoService {
@@ -31,7 +32,7 @@ export class PhotoService {
     private readonly vehiclesRepository: Repository<Vehicles>,
     @InjectRepository(Starships)
     private readonly starshipsRepository: Repository<Starships>,
-
+    private readonly s3Service: S3Service,
   ) { }
 
   query = {
@@ -60,15 +61,15 @@ export class PhotoService {
   }
 
   async uploadFile(file: Express.Multer.File) {
-    const { originalname, path, size, mimetype } = file
+    const { originalname, size, mimetype } = file
 
     const existPhoto = await this.photoRepository.findOne({ where: { originalname, size } })
     if (existPhoto)
       throw new BadRequestException(`This Image: ${originalname} already exists`)
 
-    const image = await this.photoRepository.save({ originalname, path, size, mimetype, description: '' });
+    const { Key } = await this.s3Service.upload(`SW_${Date.now()}`, file.buffer)
+    const image = await this.photoRepository.save({ originalname, path: Key, size, mimetype, description: '' })
 
-    await this.removeInvalidPhotos()
     return image
   }
 
@@ -150,18 +151,16 @@ export class PhotoService {
     if (!photo) {
       throw new NotFoundException('Image not found');
     }
-    if (!fs.existsSync(photo.path)) {
-      throw new NotFoundException('File not found');
-    }
     return photo;
   }
 
   async removeAll() {
     console.log('removeAllPhoto !!!')
-    fs.rm('uploads', { recursive: true }, (err) => {
-      if (err)
-        throw new Error(`Ошибка удаления папки: ${err.message}`);
-    });
+
+    // fs.rm('uploads', { recursive: true }, (err) => {
+    //   if (err)
+    //     throw new Error(`Ошибка удаления папки: ${err.message}`);
+    // });
     return await this.photoRepository
       .createQueryBuilder('photo')
       .delete()

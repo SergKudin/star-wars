@@ -2,14 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseInt
 import { SpeciesService } from './species.service';
 import { CreateSpeciesDto } from './dto/create-species.dto';
 import { UpdateSpeciesDto } from './dto/update-species.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Species } from './entities/species.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 @ApiTags('Species')
+@ApiBearerAuth('jwt')
 @Controller('species')
 export class SpeciesController {
   constructor(private readonly speciesService: SpeciesService) { }
@@ -78,7 +79,6 @@ export class SpeciesController {
     return this.speciesService.remove(id)
   }
 
-  // @UseGuards(AuthGuard("api-key"))
   @Post('restore/:id')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Species with the specified ID" })

@@ -2,14 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInter
 import { PlanetsService } from './planets.service';
 import { CreatePlanetDto } from './dto/create-planet.dto';
 import { UpdatePlanetDto } from './dto/update-planet.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Planet } from './entities/planet.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
 import { DeleteResult } from 'typeorm';
 
 @ApiTags('Planets')
+@ApiBearerAuth('jwt')
 @Controller('planets')
 export class PlanetsController {
   constructor(private readonly planetsService: PlanetsService) { }
@@ -78,7 +79,6 @@ export class PlanetsController {
     return this.planetsService.remove(id)
   }
 
-  // @UseGuards(AuthGuard("api-key"))
   @Post('restore/:id')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Planet with the specified ID" })

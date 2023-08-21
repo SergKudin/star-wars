@@ -1,18 +1,17 @@
 import { Controller, Get, HttpStatus, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { MigrationService } from './migration.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePeopleDto } from 'src/people/dto/create-people.dto';
 import { CreatePlanetDto } from 'src/planets/dto/create-planet.dto';
 import { CreateFilmDto } from 'src/films/dto/create-film.dto';
 import { CreateSpeciesDto } from 'src/species/dto/create-species.dto';
 import { CreateVehicleDto } from 'src/vehicles/dto/create-vehicle.dto';
 import { CreateStarshipDto } from 'src/starships/dto/create-starship.dto';
-import { SwapiSummObj } from 'src/types/swapiSummObj.type';
+import { SwapiSummObj } from 'src/types/swapi-summ-obj.type';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 
 @ApiTags('migration')
-// @ApiSecurity("X-API-KEY", ["X-API-KEY"]) 
-// // <----- Авторизация через Swagger 
+@ApiBearerAuth('jwt')
 @Controller('migration')
 export class MigrationController {
   constructor(private readonly migrationService: MigrationService) { }

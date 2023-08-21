@@ -1,22 +1,28 @@
 import { Response } from 'express';
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Req, UseInterceptors, UploadedFile, ParseFilePipeBuilder, Res, HttpException, StreamableFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Req, UseInterceptors, UploadedFile, ParseFilePipeBuilder, Res, StreamableFile } from '@nestjs/common';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { createReadStream } from 'fs';
+
 import { PhotoService } from './photo.service';
 import { UpdatePhotoDto } from './dto/update-photo.dto';
-import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Photo } from './entities/photo.entity';
-import { SwapiResponse } from 'src/types/swapiResponse.type';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { SwapiResponse } from 'src/types/swapi-response.type';
 import { AtLeastOneExistsPipe } from './pipes/at-least-one-exists.pipe';
-import { createReadStream } from 'fs';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
-import { DeleteResult, UpdateResult } from 'typeorm';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { PathExistsInterceptor } from 'src/interceptors/path-exists.interceptor';
+import { S3Service } from 'src/s3/s3.service';
+import internal from 'stream';
 
 @ApiTags('Photo')
+@ApiBearerAuth('jwt')
 @Controller('photo')
 export class PhotoController {
-  constructor(private readonly photoService: PhotoService) { }
+  constructor(private readonly photoService: PhotoService,
+    private readonly s3Service: S3Service,
+  ) { }
 
   @Patch(':id')
   @UseInterceptors(DataInterceptor)
@@ -106,14 +112,14 @@ export class PhotoController {
   @ApiResponse({ status: HttpStatus.OK, description: "Success" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: "Unauthorized" })
-  async getFile(@Param('id') id: string, @Res({ passthrough: true }) res: Response): Promise<StreamableFile> {
+  async getFile(@Param('id') id: string, @Res() res: Response): Promise<void> {
     const { path, mimetype, originalname } = await this.photoService.getFilePath(id);
-    const file = createReadStream(path);
+    const data: internal.Readable = this.s3Service.load(path)
     res.set({
       'Content-Type': mimetype,
       'Content-Disposition': `attachment; filename=${originalname}`,
-    });
-    return new StreamableFile(file);
+    })
+    data.pipe(res)
   }
 
   @Post('restore/:id')

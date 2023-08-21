@@ -17,6 +17,8 @@ import { AllExceptionsFilter } from './all-exception.filter';
 import { InterceptorModule } from './interceptors/interceptor.module';
 import { PhotoModule } from './photo/photo.module';
 import { AppConfig, DatabaseConfig } from './config';
+import { AuthModule } from './auth/auth.module';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { AppConfig, DatabaseConfig } from './config';
     MigrationModule,
     PhotoModule,
     InterceptorModule,
+    AuthModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [

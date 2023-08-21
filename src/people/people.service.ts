@@ -4,7 +4,7 @@ import { DeleteResult, In, IsNull, Not, Repository, UpdateResult } from 'typeorm
 
 import { CreatePeopleDto } from './dto/create-people.dto'
 import { UpdatePeopleDto } from './dto/upate-people.dto'
-import { SwapiResponse } from 'src/types/swapiResponse.type'
+import { SwapiResponse } from 'src/types/swapi-response.type'
 import { People } from './entities/people.entity'
 import { Planet } from 'src/planets/entities/planet.entity'
 import { Films } from 'src/films/entities/film.entity'
