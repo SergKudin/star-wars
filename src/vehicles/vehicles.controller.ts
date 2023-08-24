@@ -7,6 +7,7 @@ import { Vehicles } from './entities/vehicle.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
 import { SwapiResponse } from 'src/types/swapi-response.type';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('Vehicles')
 @ApiBearerAuth('jwt')
@@ -15,6 +16,7 @@ export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) { }
 
   @Post()
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Create a Vehicle. Links with other objects are made using the url field" })
   @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
@@ -57,6 +59,7 @@ export class VehiclesController {
   }
 
   @Patch(':id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Updates a Vehicle with specified id" })
   @ApiParam({ name: "id", required: true, description: "Vehicle identifier" })
@@ -68,6 +71,7 @@ export class VehiclesController {
   }
 
   @Delete('remove/:id')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Soft-deletes a Vehicle with specified id" })
   @ApiParam({ name: "id", required: true, description: "Vehicle identifier" })
@@ -79,6 +83,7 @@ export class VehiclesController {
   }
 
   @Post('restore/:id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Vehicle with the specified ID" })
   @ApiParam({ name: "id", required: true, description: "Vehicle identifier" })

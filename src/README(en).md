@@ -4,7 +4,7 @@
 SWAPI Project is a RESTful API that provides access to "Star Wars" movie data. The main goal of the project is to learn how to implement similar functionality using tools like Nest, Swagger, TypeORM, and others to create a backend for an informational website about the "Star Wars" universe. The website's interface reflects the author's vision of implementing such functionality.
 
 ## Swagger Documentation
-Detailed API documentation can be found on the Swagger page (available after project launch): [http://localhost:3000/api#/](http://localhost:3000/api#/)
+Detailed API documentation can be found on the Swagger page (available after project launch): [http://localhost:4000/api#/](http://localhost:4000/api#/)
 
 ## Endpoint Overview
 
@@ -59,10 +59,28 @@ interface SwapiResponse<T extends People | Planet | Films | Species | Vehicles |
 }
 ```
 
-More detailed descriptions of these and other formats are provided on the Swagger page (available after project launch): [http://localhost:3000/api#/](http://localhost:3000/api#/)
+More detailed descriptions of these and other formats are provided on the Swagger page (available after project launch): [http://localhost:4000/api#/](http://localhost:4000/api#/)
 
 ## Authentication and Security
-Authentication and security features are not currently implemented in the project.
+The system provides authentication and role-based access.
+
+### Authorization via JWT Tokens
+After authorization, please add the received JWT token to the authorization header in Swagger to gain access to protected resources.
+
+### Roles and Permissions
+The system utilizes two roles: 'admin' and 'user'.
+  The 'user' role has access solely for viewing general information.
+  The 'admin' role has full access to all application functionalities.
+### User Accounts
+Each user can create their own user account. However, only the 'admin' can modify roles of other users.
+
+### Initial Setup
+During the first application launch, an account with the 'admin' role is automatically created:
+  Email: 'master@admin.ua'
+  Password: '123456'
+
+### Changing Password
+After the first launch, we recommend changing the password for the 'master@admin.ua' account to enhance access security.
 
 ## Examples of Requests and Responses
 
@@ -71,7 +89,7 @@ Here are a few examples of working with the API:
 Valid Request:
 ```bash
 curl -X 'GET' \
-  'http://localhost:3000/people/1' \
+  'http://localhost:4000/people/1' \
   -H 'accept: */*'
 ```
 Response:
@@ -88,7 +106,7 @@ Response:
 ### Request with Error (e.g., non-existent id):
 ```bash
 curl -X 'GET' \
-  'http://localhost:3000/people/110' \
+  'http://localhost:4000/people/110' \
   -H 'accept: */*'
 ```
 Response:
@@ -101,7 +119,7 @@ Response:
 ### Request with Message Response:
 ```bash
 curl -X 'POST' \
-  'http://localhost:3000/migration/createAll' \
+  'http://localhost:4000/migration/createAll' \
   -H 'accept: */*' \
   -d ''
 ```
@@ -142,12 +160,12 @@ To begin working with the project, follow these steps:
      ```
    **Note:** Make sure that the ports used by the project are available at the time of launch.
 
-4. Access the Swagger documentation page at [http://localhost:3000/api#/](http://localhost:3000/api#/).
+4. Access the Swagger documentation page at [http://localhost:4000/api#/](http://localhost:4000/api#/).
 
 5. Execute the following request to populate the database with information:
    ```bash
    curl -X 'POST' \
-     'http://localhost:3000/migration/createAll' \
+     'http://localhost:4000/migration/createAll' \
      -H 'accept: */*' \
      -d ''
    ```

@@ -22,5 +22,8 @@ RUN npm rebuild bcrypt --build-from-source
 # Define the port that will be used in the container
 # EXPOSE 3000
 
+# Running migrations
+# RUN npm run migration:run
+
 # Run the application when the container starts
 CMD [ "npm", "run", "start:dev" ]

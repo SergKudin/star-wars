@@ -7,7 +7,7 @@ import { Films } from './entities/film.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { SwapiResponse } from 'src/types/swapi-response.type';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
-import { DeleteResult } from 'typeorm';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('Films')
 @ApiBearerAuth('jwt')
@@ -16,6 +16,7 @@ export class FilmsController {
   constructor(private readonly filmsService: FilmsService) { }
 
   @Post()
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: 'Create a Film' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Success' })
@@ -58,6 +59,7 @@ export class FilmsController {
   }
 
   @Patch(':id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Updates a Film with specified id" })
   @ApiParam({ name: "id", required: true, description: "Film identifier" })
@@ -69,6 +71,7 @@ export class FilmsController {
   }
 
   @Delete('remove/:id')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Soft-deletes a Film with specified id" })
   @ApiParam({ name: "id", required: true, description: "Film identifier" })
@@ -80,6 +83,7 @@ export class FilmsController {
   }
 
   @Post('restore/:id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Film with the specified ID" })
   @ApiParam({ name: "id", required: true, description: "Film identifier" })

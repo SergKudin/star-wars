@@ -8,6 +8,7 @@ import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
 import { SwapiResponse } from 'src/types/swapi-response.type';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('Species')
 @ApiBearerAuth('jwt')
@@ -16,6 +17,7 @@ export class SpeciesController {
   constructor(private readonly speciesService: SpeciesService) { }
 
   @Post()
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Create a Species. Links with other objects are made using the url field" })
   @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
@@ -58,6 +60,7 @@ export class SpeciesController {
   }
 
   @Patch(':id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Updates a Species with specified id" })
   @ApiParam({ name: "id", required: true, description: "Species identifier" })
@@ -69,6 +72,7 @@ export class SpeciesController {
   }
 
   @Delete('remove/:id')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Soft-deletes a Species with specified id" })
   @ApiParam({ name: "id", required: true, description: "Species identifier" })
@@ -80,6 +84,7 @@ export class SpeciesController {
   }
 
   @Post('restore/:id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Species with the specified ID" })
   @ApiParam({ name: "id", required: true, description: "Species identifier" })

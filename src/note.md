@@ -8,6 +8,9 @@
  
  npx nest g resource newResource
 
+создание миграций
+npm run migration:generate  --name=START_MIGRATIONS
+
 
 
 

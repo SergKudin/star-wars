@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Roles } from 'src/types/roles.type';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
@@ -17,7 +18,7 @@ export class User {
 
   @Column()
   @ApiProperty({ description: 'User role', nullable: false })
-  role: 'admin' | 'user';
+  roles: Roles;
 
   @CreateDateColumn()
   @ApiProperty({ description: 'Date User created', nullable: true })

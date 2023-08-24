@@ -8,6 +8,7 @@ import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { SwapiResponse } from 'src/types/swapi-response.type';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
 import { DeleteResult } from 'typeorm';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('Planets')
 @ApiBearerAuth('jwt')
@@ -16,6 +17,7 @@ export class PlanetsController {
   constructor(private readonly planetsService: PlanetsService) { }
 
   @Post()
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Create a Planet. Links with other objects are made using the url field" })
   @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
@@ -58,6 +60,7 @@ export class PlanetsController {
   }
 
   @Patch(':id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Updates a Planet with specified id" })
   @ApiParam({ name: "id", required: true, description: "Planet identifier" })
@@ -69,6 +72,7 @@ export class PlanetsController {
   }
 
   @Delete('remove/:id')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Soft-deletes a Planet with specified id" })
   @ApiParam({ name: "id", required: true, description: "Planet identifier" })
@@ -80,6 +84,7 @@ export class PlanetsController {
   }
 
   @Post('restore/:id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of Planet with the specified ID" })
   @ApiParam({ name: "id", required: true, description: "Planet identifier" })

@@ -1,16 +1,10 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateUserDto } from './create-user.dto';
-import { IsEnum } from 'class-validator';
-
-enum UserRole {
-  Admin = 'admin',
-  User = 'user',
-}
+import { Roles } from 'src/types/roles.type';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
 
-  @ApiProperty({ description: 'User role', enum: UserRole })
-  @IsEnum(UserRole)
-  role: UserRole;
+  @ApiProperty({ description: 'User role' })
+  role: Roles;
 
 }

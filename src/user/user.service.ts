@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserLogin } from 'src/types/user-login.type';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Roles } from 'src/types/roles.type';
 
 
 @Injectable()
@@ -17,7 +18,7 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async create(createUserDto: CreateUserDto): Promise<UserLogin> {
+  async create(createUserDto: CreateUserDto, role?: Roles): Promise<UserLogin> {
     const existUser: User = await this.userRepository.findOne({
       where: {
         email: createUserDto.email
@@ -28,7 +29,7 @@ export class UserService {
     const { id, email } = await this.userRepository.save({
       email: createUserDto.email,
       password: await bcrypt.hash(createUserDto.password, +process.env.SALT_OR_ROUNDS),
-      role: 'user'
+      role: role ?? 'user'
     })
     const token = await this.jwtService.signAsync({ id, email })
     return { id, email, token }
@@ -36,6 +37,11 @@ export class UserService {
 
   async findOne(email: string): Promise<User | undefined> {
     const user = await this.userRepository.findOne({ where: { email } })
+    return user
+  }
+
+  async findOneId(id: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({ where: { id } })
     return user
   }
 
@@ -48,7 +54,7 @@ export class UserService {
     if (!existUser) throw new BadRequestException('This user does not exist')
 
     existUser.email = updateUserDto.email
-    existUser.role = updateUserDto.role
+    existUser.roles = updateUserDto.role
 
     const { password, ...rest } = await this.userRepository.save(existUser)
     return { ...rest }
@@ -63,7 +69,7 @@ export class UserService {
     if (!existUser) throw new BadRequestException('This user does not exist')
 
     existUser.password = await bcrypt.hash(updateUserDto.password, +process.env.SALT_OR_ROUNDS)
-
+    // console.log('pass = old pass?: ' + pass + ' = ' + existUser.password + '?: ' + pass === existUser.password)
     const { password, ...rest } = await this.userRepository.save(existUser)
     return { ...rest }
   }

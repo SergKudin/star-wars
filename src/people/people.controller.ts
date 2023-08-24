@@ -10,6 +10,7 @@ import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
 import { MyResponse } from 'src/types/my-response.type';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('People')
 @ApiBearerAuth('jwt')
@@ -19,6 +20,7 @@ export class PeopleController {
   constructor(private readonly peopleService: PeopleService) { }
 
   @Post()
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Create a People. Links with other objects are made using the url field" })
   @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
@@ -61,6 +63,7 @@ export class PeopleController {
   }
 
   @Patch(':id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Updates a People with specified id" })
   @ApiParam({ name: "id", required: true, description: "People identifier" })
@@ -72,6 +75,7 @@ export class PeopleController {
   }
 
   @Delete('remove/:id')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Soft-deletes a People with specified id" })
   @ApiParam({ name: "id", required: true, description: "People identifier" })
@@ -83,6 +87,7 @@ export class PeopleController {
   }
 
   @Post('restore/:id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Restores records of people with the specified ID" })
   @ApiParam({ name: "id", required: true, description: "People identifier" })

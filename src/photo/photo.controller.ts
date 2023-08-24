@@ -15,6 +15,7 @@ import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { PathExistsInterceptor } from 'src/interceptors/path-exists.interceptor';
 import { S3Service } from 'src/s3/s3.service';
 import internal from 'stream';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('Photo')
 @ApiBearerAuth('jwt')
@@ -25,6 +26,7 @@ export class PhotoController {
   ) { }
 
   @Patch(':id')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Update a Photo" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: UpdatePhotoDto })
@@ -39,6 +41,7 @@ export class PhotoController {
   }
 
   @Post('upload-file')
+  @Roles('admin')
   @ApiOperation({ summary: "Upload Image" })
   @ApiBody({
     description: 'Upload Image file',
@@ -123,6 +126,7 @@ export class PhotoController {
   }
 
   @Post('restore/:id')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Restores records of photo with the specified ID" })
   @ApiParam({ name: "id", required: true, description: "Photo identifier" })
@@ -134,6 +138,7 @@ export class PhotoController {
   }
 
   @Delete('removeAll')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Deletes all image" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success" })
@@ -144,6 +149,7 @@ export class PhotoController {
   }
 
   @Delete(':id')
+  @Roles('admin')
   @UseInterceptors(ResultInterceptor)
   @ApiOperation({ summary: "Remove a image" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success" })

@@ -6,6 +6,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UserLogin } from 'src/types/user-login.type';
 import { LoginDto } from './dto/login.dto';
 import { SkipAuth } from './decorators/skip-auth.decorators';
+import { Roles } from './decorators/roles.decorators';
 
 @ApiTags('Auth')
 @Controller('auth')
