@@ -63,13 +63,13 @@ export class Photo {
   @ApiProperty({ description: 'An array of Photos that are in this Vehicles', nullable: true })
   vehicles: Vehicles
 
-  @CreateDateColumn()
-  @ApiProperty({ description: 'Record creation date', nullable: true })
-  created: string;
+  // @CreateDateColumn()
+  // @ApiProperty({ description: 'Record creation date', nullable: true })
+  // created: string;
 
-  @UpdateDateColumn()
-  @ApiProperty({ description: 'Record update date', nullable: true })
-  edited: string;
+  // @UpdateDateColumn()
+  // @ApiProperty({ description: 'Record update date', nullable: true })
+  // edited: string;
 
   @DeleteDateColumn()
   @ApiProperty({ description: 'for soft-delete Photos', nullable: true })

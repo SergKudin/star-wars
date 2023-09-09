@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   mysql:
     image: mysql
@@ -13,7 +13,7 @@ services:
       - 3306:3306
     networks:
       - my-network
-    mem_limit: 1024m
+    mem_limit: 512m
     mem_reservation: 512m
 
   app:
@@ -26,6 +26,10 @@ services:
       - my-network
     mem_limit: 1024m
     mem_reservation: 256m
+    command:
+      - bash
+      - -c
+      - "node --max-old-space-size=512 dist/src/main.js"
 
 networks:
   my-network:

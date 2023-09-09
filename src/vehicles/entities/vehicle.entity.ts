@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Films } from "src/films/entities/film.entity";
 import { People } from "src/people/entities/people.entity";
 import { Photo } from "src/photo/entities/photo.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Vehicles {

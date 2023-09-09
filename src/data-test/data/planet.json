@@ -1,0 +1,419 @@
+[
+  {
+    "planet_id": 1,
+    "name": "Tatooine",
+    "diameter": "10465",
+    "rotation_period": "23",
+    "orbital_period": "304",
+    "gravity": "1 standard",
+    "population": "200000",
+    "climate": "arid",
+    "terrain": "desert",
+    "surface_water": "1",
+    "url": "https://swapi.dev/api/planets/1/",
+    "createdAt": "2023-08-28T14:07:15.833Z",
+    "updatedAt": "2023-08-28T14:07:15.833Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "residents": [
+      {
+        "_id": 1,
+        "name": "Luke Skywalker"
+      },
+      {
+        "_id": 2,
+        "name": "C-3PO"
+      },
+      {
+        "_id": 4,
+        "name": "Darth Vader"
+      },
+      {
+        "_id": 6,
+        "name": "Owen Lars"
+      },
+      {
+        "_id": 7,
+        "name": "Beru Whitesun lars"
+      },
+      {
+        "_id": 8,
+        "name": "R5-D4"
+      },
+      {
+        "_id": 9,
+        "name": "Biggs Darklighter"
+      },
+      {
+        "_id": 11,
+        "name": "Anakin Skywalker"
+      },
+      {
+        "_id": 42,
+        "name": "Shmi Skywalker"
+      },
+      {
+        "_id": 61,
+        "name": "Cliegg Lars"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "planet_id": 2,
+    "name": "Alderaan",
+    "diameter": "12500",
+    "rotation_period": "24",
+    "orbital_period": "364",
+    "gravity": "1 standard",
+    "population": "2000000000",
+    "climate": "temperate",
+    "terrain": "grasslands, mountains",
+    "surface_water": "40",
+    "url": "https://swapi.dev/api/planets/2/",
+    "createdAt": "2023-08-28T14:07:16.009Z",
+    "updatedAt": "2023-08-28T14:07:16.009Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "residents": [
+      {
+        "_id": 5,
+        "name": "Leia Organa"
+      },
+      {
+        "_id": 67,
+        "name": "Bail Prestor Organa"
+      },
+      {
+        "_id": 80,
+        "name": "Raymus Antilles"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "planet_id": 3,
+    "name": "Yavin IV",
+    "diameter": "10200",
+    "rotation_period": "24",
+    "orbital_period": "4818",
+    "gravity": "1 standard",
+    "population": "1000",
+    "climate": "temperate, tropical",
+    "terrain": "jungle, rainforests",
+    "surface_water": "8",
+    "url": "https://swapi.dev/api/planets/3/",
+    "createdAt": "2023-08-28T14:07:16.144Z",
+    "updatedAt": "2023-08-28T14:07:16.144Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      }
+    ],
+    "residents": [],
+    "photos": []
+  },
+  {
+    "planet_id": 4,
+    "name": "Hoth",
+    "diameter": "7200",
+    "rotation_period": "23",
+    "orbital_period": "549",
+    "gravity": "1.1 standard",
+    "population": "unknown",
+    "climate": "frozen",
+    "terrain": "tundra, ice caves, mountain ranges",
+    "surface_water": "100",
+    "url": "https://swapi.dev/api/planets/4/",
+    "createdAt": "2023-08-28T14:07:16.222Z",
+    "updatedAt": "2023-08-28T14:07:16.222Z",
+    "films": [
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      }
+    ],
+    "residents": [],
+    "photos": []
+  },
+  {
+    "planet_id": 5,
+    "name": "Dagobah",
+    "diameter": "8900",
+    "rotation_period": "23",
+    "orbital_period": "341",
+    "gravity": "N/A",
+    "population": "unknown",
+    "climate": "murky",
+    "terrain": "swamp, jungles",
+    "surface_water": "8",
+    "url": "https://swapi.dev/api/planets/5/",
+    "createdAt": "2023-08-28T14:07:16.305Z",
+    "updatedAt": "2023-08-28T14:07:16.305Z",
+    "films": [
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "residents": [],
+    "photos": []
+  },
+  {
+    "planet_id": 6,
+    "name": "Bespin",
+    "diameter": "118000",
+    "rotation_period": "12",
+    "orbital_period": "5110",
+    "gravity": "1.5 (surface), 1 standard (Cloud City)",
+    "population": "6000000",
+    "climate": "temperate",
+    "terrain": "gas giant",
+    "surface_water": "0",
+    "url": "https://swapi.dev/api/planets/6/",
+    "createdAt": "2023-08-28T14:07:16.386Z",
+    "updatedAt": "2023-08-28T14:07:16.386Z",
+    "films": [
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      }
+    ],
+    "residents": [
+      {
+        "_id": 25,
+        "name": "Lobot"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "planet_id": 7,
+    "name": "Endor",
+    "diameter": "4900",
+    "rotation_period": "18",
+    "orbital_period": "402",
+    "gravity": "0.85 standard",
+    "population": "30000000",
+    "climate": "temperate",
+    "terrain": "forests, mountains, lakes",
+    "surface_water": "8",
+    "url": "https://swapi.dev/api/planets/7/",
+    "createdAt": "2023-08-28T14:07:16.518Z",
+    "updatedAt": "2023-08-28T14:07:16.518Z",
+    "films": [
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "residents": [
+      {
+        "_id": 29,
+        "name": "Wicket Systri Warrick"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "planet_id": 8,
+    "name": "Naboo",
+    "diameter": "12120",
+    "rotation_period": "26",
+    "orbital_period": "312",
+    "gravity": "1 standard",
+    "population": "4500000000",
+    "climate": "temperate",
+    "terrain": "grassy hills, swamps, forests, mountains",
+    "surface_water": "12",
+    "url": "https://swapi.dev/api/planets/8/",
+    "createdAt": "2023-08-28T14:07:16.650Z",
+    "updatedAt": "2023-08-28T14:07:16.650Z",
+    "films": [
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "residents": [
+      {
+        "_id": 3,
+        "name": "R2-D2"
+      },
+      {
+        "_id": 20,
+        "name": "Palpatine"
+      },
+      {
+        "_id": 34,
+        "name": "Padmé Amidala"
+      },
+      {
+        "_id": 35,
+        "name": "Jar Jar Binks"
+      },
+      {
+        "_id": 36,
+        "name": "Roos Tarpals"
+      },
+      {
+        "_id": 37,
+        "name": "Rugor Nass"
+      },
+      {
+        "_id": 38,
+        "name": "Ric Olié"
+      },
+      {
+        "_id": 41,
+        "name": "Quarsh Panaka"
+      },
+      {
+        "_id": 59,
+        "name": "Gregar Typho"
+      },
+      {
+        "_id": 60,
+        "name": "Cordé"
+      },
+      {
+        "_id": 65,
+        "name": "Dormé"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "planet_id": 9,
+    "name": "Coruscant",
+    "diameter": "12240",
+    "rotation_period": "24",
+    "orbital_period": "368",
+    "gravity": "1 standard",
+    "population": "1000000000000",
+    "climate": "temperate",
+    "terrain": "cityscape, mountains",
+    "surface_water": "unknown",
+    "url": "https://swapi.dev/api/planets/9/",
+    "createdAt": "2023-08-28T14:07:16.818Z",
+    "updatedAt": "2023-08-28T14:07:16.818Z",
+    "films": [
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "residents": [
+      {
+        "_id": 33,
+        "name": "Finis Valorum"
+      },
+      {
+        "_id": 54,
+        "name": "Adi Gallia"
+      },
+      {
+        "_id": 73,
+        "name": "Jocasta Nu"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "planet_id": 10,
+    "name": "Kamino",
+    "diameter": "19720",
+    "rotation_period": "27",
+    "orbital_period": "463",
+    "gravity": "1 standard",
+    "population": "1000000000",
+    "climate": "temperate",
+    "terrain": "ocean",
+    "surface_water": "100",
+    "url": "https://swapi.dev/api/planets/10/",
+    "createdAt": "2023-08-28T14:07:17.450Z",
+    "updatedAt": "2023-08-28T14:07:17.450Z",
+    "films": [
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      }
+    ],
+    "residents": [
+      {
+        "_id": 21,
+        "name": "Boba Fett"
+      },
+      {
+        "_id": 71,
+        "name": "Lama Su"
+      },
+      {
+        "_id": 72,
+        "name": "Taun We"
+      }
+    ],
+    "photos": []
+  }
+]

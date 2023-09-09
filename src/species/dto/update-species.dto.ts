@@ -43,7 +43,7 @@ export class UpdateSpeciesDto {
   language: string;
 
   @ApiProperty({ description: 'The URL of the homeworld resource associated with the species', nullable: true })
-  // @IsString()
+  @IsString()
   homeworld: string;
 
   @ApiProperty({ description: 'An array of People that are a part of this species.', nullable: true })
@@ -60,11 +60,11 @@ export class UpdateSpeciesDto {
   @IsString()
   url: string;
 
-  @ApiProperty({ description: 'Record creation date', nullable: true })
-  @IsString()
-  created: string;
+  // @ApiProperty({ description: 'Record creation date', nullable: true })
+  // @IsString()
+  // created: string;
 
-  @ApiProperty({ description: 'Record update date', nullable: true })
-  @IsString()
-  edited: string;
+  // @ApiProperty({ description: 'Record update date', nullable: true })
+  // @IsString()
+  // edited: string;
 }

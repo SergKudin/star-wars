@@ -37,4 +37,4 @@ lerna-debug.log*
 # Other
 .env
 uploads/
-
+src/note.md

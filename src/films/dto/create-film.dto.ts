@@ -61,12 +61,12 @@ export class CreateFilmDto {
   @IsString()
   url: string;
 
-  @ApiProperty({ description: 'Record creation date', nullable: true })
-  @IsString()
-  created: string;
+  // @ApiProperty({ description: 'Record creation date', nullable: true })
+  // @IsString()
+  // created: string;
 
-  @ApiProperty({ description: 'Record update date', nullable: true })
-  @IsString()
-  edited: string;
+  // @ApiProperty({ description: 'Record update date', nullable: true })
+  // @IsString()
+  // edited: string;
 
 }

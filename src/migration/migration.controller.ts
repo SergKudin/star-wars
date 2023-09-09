@@ -9,6 +9,7 @@ import { CreateVehicleDto } from 'src/vehicles/dto/create-vehicle.dto';
 import { CreateStarshipDto } from 'src/starships/dto/create-starship.dto';
 import { SwapiSummObj } from 'src/types/swapi-summ-obj.type';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('migration')
 @ApiBearerAuth('jwt')
@@ -17,6 +18,7 @@ export class MigrationController {
   constructor(private readonly migrationService: MigrationService) { }
 
   @Get()
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Returns all available records SWAPI of People" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", isArray: true })
@@ -29,6 +31,7 @@ export class MigrationController {
   }
 
   @Get('people')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Returns all available records SWAPI of People" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePeopleDto, isArray: true })
@@ -41,6 +44,7 @@ export class MigrationController {
   }
 
   @Get('planets')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Returns all available records SWAPI of Planets" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreatePlanetDto, isArray: true })
@@ -53,6 +57,7 @@ export class MigrationController {
   }
 
   @Get('films')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Returns all available records SWAPI of Films" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreateFilmDto, isArray: true })
@@ -65,6 +70,7 @@ export class MigrationController {
   }
 
   @Get('species')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Returns all available records SWAPI of Species" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreateSpeciesDto, isArray: true })
@@ -77,6 +83,7 @@ export class MigrationController {
   }
 
   @Get('vehicles')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Returns all available records SWAPI of Vehicles" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreateVehicleDto, isArray: true })
@@ -89,6 +96,7 @@ export class MigrationController {
   }
 
   @Get('starships')
+  @Roles('admin')
   @UseInterceptors(DataInterceptor)
   @ApiOperation({ summary: "Returns all available records SWAPI of Starships" })
   @ApiResponse({ status: HttpStatus.OK, description: "Success", type: CreateStarshipDto, isArray: true })
@@ -101,6 +109,7 @@ export class MigrationController {
   }
 
   @Post('createAll')
+  @Roles('admin')
   @ApiOperation({ summary: "Create all objects to DB" })
   @ApiResponse({ status: HttpStatus.CREATED, description: "Success" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "Bad Request" })

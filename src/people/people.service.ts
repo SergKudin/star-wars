@@ -126,7 +126,6 @@ export class PeopleService {
 
   async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<People>> {
     // limit - elements by page
-    // route = request.url
     const { countStr }: { countStr: string } = await this.peopleRepository
       .createQueryBuilder('people')
       .select('COUNT(_id) AS countStr')
@@ -151,7 +150,6 @@ export class PeopleService {
       relations: this.query.relations,
       where: { _id: id + '' }
     })
-    // console.log(existPeople.length > 0)
     if (existPeople.length === 0)
       throw new NotFoundException(`Bad request! Check You data: id ${id} not find`)
     return existPeople[0]

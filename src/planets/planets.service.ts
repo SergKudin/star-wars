@@ -81,12 +81,8 @@ export class PlanetsService {
     const savedPlanet = await this.planetRepository.save(rest);
 
     // Get instances of related objects from repositories & Establish links between objects    
-    // if (homeworld) savedPlanet.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
     if (films) savedPlanet.films = await this.filmsRepository.find({ where: { url: In(films) } });
     if (residents) savedPlanet.residents = await this.peopleRepository.find({ where: { url: In(residents) } });
-    // if (species) savedPlanet.species = await this.speciesRepository.find({ where: { url: In(species) } });
-    // if (starships) savedPlanet.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
-    // if (vehicles) savedPlanet.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
 
     // Save the updated Planet object with the relationships set    
     return this.planetRepository.save(savedPlanet);
@@ -98,13 +94,6 @@ export class PlanetsService {
 
     // Save Planet Objects Without Relationships    
     for (let dto of createPlanetDto) {
-      // const existPlanet: Planet = await this.planetRepository.findOne({ where: { url: dto.url } })
-      // if (existPlanet)
-      //   throw new BadRequestException(`This Planet: ${dto.name} with url: ${dto.url} already exists`)
-      // const { residents, films, ...rest } = dto;
-
-      // const savedPlanet: Planet = await this.planetRepository.save(rest);
-      // savedPlanets.push(savedPlanet);
       savedPlanets.push(await this.createPlanet(dto))
     }
     return savedPlanets;
@@ -129,7 +118,6 @@ export class PlanetsService {
 
   async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<Planet>> {
     // limit - elements by page
-    // route = request.url
     const { countStr }: { countStr: string } = await this.planetRepository
       .createQueryBuilder('planet')
       .select('COUNT(planet_id) AS countStr')

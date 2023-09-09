@@ -11,13 +11,16 @@ import { People } from 'src/people/entities/people.entity';
 import { Films } from 'src/films/entities/film.entity';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
+import { VehiclesController } from './vehicles.controller';
 
 describe('VehiclesService', () => {
+  let controller: VehiclesController;
   let service: VehiclesService;
   let fakeVehiclesRepository: Partial<Repository<Vehicles>>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [VehiclesController],
       providers: [
         VehiclesService,
         {
@@ -35,17 +38,19 @@ describe('VehiclesService', () => {
       ],
     }).compile();
 
+    controller = module.get<VehiclesController>(VehiclesController);
     service = module.get<VehiclesService>(VehiclesService);
     fakeVehiclesRepository = module.get<Repository<Vehicles>>(getRepositoryToken(Vehicles));
   });
 
-  it('testing toBeDefined', () => {
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
     expect(service).toBeDefined();
-  });
+  })
 
   for (let id = 1; id < 10; id++) {
     it(`getById with Id ${id}`, async () => {
-      const result = await service.getById(id);
+      const result = await controller.getById(id);
       expect(result).toEqual(vehiclesData[id - 1]);
     });
   }
@@ -56,7 +61,7 @@ describe('VehiclesService', () => {
       let result: Vehicles | Vehicles[];
       const expected = await service.getById(id);
       const { photos, films, pilots, createdAt, updatedAt, deletedAt, name, ...rest } = expected
-      await service.updateVehicle(id + '', { name: newName, ...rest } as UpdateVehicleDto);
+      await controller.update({ name: newName, ...rest } as UpdateVehicleDto, id + '');
       const res = await fakeVehiclesRepository.find({ where: { vehicle_id: id + '' } });
       (res.length > 1) ? result = res : result = res[0]
       expect(result).toEqual({ name: newName, ...rest } as Vehicles);
@@ -70,7 +75,7 @@ describe('VehiclesService', () => {
       const { photos, films, pilots, createdAt, updatedAt, deletedAt, vehicle_id, url, ...rest } = expected
       const newId = (id + 10) + ''
       const newUrl = url + newId + '/'
-      await service.createVehicle({ vehicle_id: newId, url: newUrl, ...rest } as CreateVehicleDto);
+      await controller.create({ vehicle_id: newId, url: newUrl, ...rest } as CreateVehicleDto);
       const res = await fakeVehiclesRepository.find({ where: { vehicle_id: newId } });
       (res.length > 1) ? result = res : result = res[0]
       expect(result).toEqual({ vehicle_id: newId, url: newUrl, ...rest } as Vehicles);

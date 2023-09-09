@@ -22,10 +22,6 @@ export class PathExistsInterceptor implements NestInterceptor {
       }
     }
 
-    return next.handle().pipe(
-      // catchError((error) => {
-      //   throw error;
-      // }),
-    );
+    return next.handle().pipe();
   }
 }

@@ -88,12 +88,8 @@ export class StarshipsService {
     const savedStarship = await this.starshipsRepository.save(rest);
 
     // Get instances of related objects from repositories & Establish links between objects    
-    // if (homeworld) savedStarship.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
     if (films) savedStarship.films = await this.filmsRepository.find({ where: { url: In(films) } });
     if (pilots) savedStarship.pilots = await this.peopleRepository.find({ where: { url: In(pilots) } });
-    // if (species) savedStarship.species = await this.speciesRepository.find({ where: { url: In(species) } });
-    // if (starships) savedStarship.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
-    // if (vehicles) savedStarship.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
 
     // Save the updated Starship object with the relationships set    
     return this.starshipsRepository.save(savedStarship);
@@ -105,13 +101,6 @@ export class StarshipsService {
 
     // Save Starship Objects Without Relationships    
     for (let dto of createStarshipDto) {
-      // const existStarship: Starships = await this.starshipsRepository.findOne({ where: { url: dto.url } })
-      // if (existStarship)
-      //   throw new BadRequestException(`This Starship: ${dto.name} with url: ${dto.url} already exists`)
-      // const { films, pilots, ...rest } = dto;
-
-      // const savedStarship: Starships = await this.starshipsRepository.save(rest);
-      // savedStarships.push(savedStarship);
       savedStarships.push(await this.createStarship(dto))
     }
     return savedStarships;
@@ -136,7 +125,6 @@ export class StarshipsService {
 
   async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<Starships>> {
     // limit - elements by page
-    // route = request.url
     const { countStr }: { countStr: string } = await this.starshipsRepository
       .createQueryBuilder('starships')
       .select('COUNT(starship_id) AS countStr')

@@ -86,9 +86,6 @@ export class SpeciesService {
     if (homeworld) savedSpecies.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
     if (films) savedSpecies.films = await this.filmsRepository.find({ where: { url: In(films) } });
     if (people) savedSpecies.people = await this.peopleRepository.find({ where: { url: In(people) } });
-    // if (species) savedSpecies.species = await this.speciesRepository.find({ where: { url: In(species) } });
-    // if (starships) savedSpecies.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
-    // if (vehicles) savedSpecies.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
 
     // Save the updated Species object with the relationships set    
     return this.speciesRepository.save(savedSpecies);
@@ -100,13 +97,6 @@ export class SpeciesService {
 
     // Save Species Objects Without Relationships    
     for (let dto of createSpeciesDto) {
-      // const existSpecies: Species = await this.speciesRepository.findOne({ where: { url: dto.url } })
-      // if (existSpecies)
-      //   throw new BadRequestException(`This Species: ${dto.name} with url: ${dto.url} already exists`)
-      // const { people, films, homeworld, ...rest } = dto;
-
-      // const saved: Species = await this.speciesRepository.save(rest);
-      // savedSpecies.push(saved);
       savedSpecies.push(await this.createSpecies(dto))
     }
     return savedSpecies;
@@ -131,7 +121,6 @@ export class SpeciesService {
 
   async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<Species>> {
     // limit - elements by page
-    // route = request.url
     const { countStr }: { countStr: string } = await this.speciesRepository
       .createQueryBuilder('species')
       .select('COUNT(species_id) AS countStr')

@@ -16,12 +16,12 @@ import { PlanetsService } from 'src/planets/planets.service'
 import { SpeciesService } from 'src/species/species.service'
 import { VehiclesService } from 'src/vehicles/vehicles.service'
 import { StarshipsService } from 'src/starships/starships.service'
-import { migrPeopleData } from './data-for-test/migration.testPeople'
-import { migrFilmsData } from './data-for-test/migration.testFilm'
-import { migrPlanetsData } from './data-for-test/migration.testPlanet'
-import { migrSpeciesData } from './data-for-test/migration.testSpecies'
-import { migrStarshipsData } from './data-for-test/migration.testStarships'
-import { migrVihiclesData } from './data-for-test/migration.testVihicles'
+import { migrPeopleData } from './data-for-start/migration.people'
+import { migrFilmsData } from './data-for-start/migration.film'
+import { migrPlanetsData } from './data-for-start/migration.planet'
+import { migrSpeciesData } from './data-for-start/migration.species'
+import { migrStarshipsData } from './data-for-start/migration.starships'
+import { migrVihiclesData } from './data-for-start/migration.vihicles'
 import { PhotoService } from 'src/photo/photo.service'
 
 @Injectable()
@@ -142,7 +142,6 @@ export class MigrationService {
 
     // for start test
     if (this.useTestData) {
-      // console.log(`Use test data`)
       log.push(`Use test data`)
       this.migrationData.set('people', migrPeopleData as unknown as CreatePeopleDto[])
       this.migrationData.set('planets', migrPlanetsData as unknown as CreatePlanetDto[])
@@ -157,11 +156,9 @@ export class MigrationService {
 
     for (const sourse of this.migrationData) {
       const key = sourse[0];
-      // console.log(`Start creating ${key}`);
       log.push(`Start creating ${key}`)
       if (key) {
         await this.createSwapiSummObj[key](sourse[1])
-        // console.log(` While creating ${key} success`);
         log.push(` While creating ${key} success`)
       }
     }

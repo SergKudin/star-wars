@@ -157,10 +157,6 @@ export class PhotoService {
   async removeAll() {
     console.log('removeAllPhoto !!!')
 
-    // fs.rm('uploads', { recursive: true }, (err) => {
-    //   if (err)
-    //     throw new Error(`Ошибка удаления папки: ${err.message}`);
-    // });
     return await this.photoRepository
       .createQueryBuilder('photo')
       .delete()

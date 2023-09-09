@@ -18,7 +18,7 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async create(createUserDto: CreateUserDto, role?: Roles): Promise<UserLogin> {
+  async create(createUserDto: CreateUserDto, role: Roles = 'user'): Promise<UserLogin> {
     const existUser: User = await this.userRepository.findOne({
       where: {
         email: createUserDto.email
@@ -26,10 +26,12 @@ export class UserService {
     })
     if (existUser) throw new BadRequestException('This email already exists')
 
+    console.log({ createUserDto, role })
+
     const { id, email } = await this.userRepository.save({
       email: createUserDto.email,
       password: await bcrypt.hash(createUserDto.password, +process.env.SALT_OR_ROUNDS),
-      role: role ?? 'user'
+      roles: role
     })
     const token = await this.jwtService.signAsync({ id, email })
     return { id, email, token }
@@ -69,7 +71,6 @@ export class UserService {
     if (!existUser) throw new BadRequestException('This user does not exist')
 
     existUser.password = await bcrypt.hash(updateUserDto.password, +process.env.SALT_OR_ROUNDS)
-    // console.log('pass = old pass?: ' + pass + ' = ' + existUser.password + '?: ' + pass === existUser.password)
     const { password, ...rest } = await this.userRepository.save(existUser)
     return { ...rest }
   }

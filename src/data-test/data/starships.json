@@ -1,0 +1,359 @@
+[
+  {
+    "starship_id": 1,
+    "name": "CR90 corvette",
+    "model": "CR90 corvette",
+    "starship_class": "corvette",
+    "manufacturer": "Corellian Engineering Corporation",
+    "cost_in_credits": "3500000",
+    "length": "150",
+    "crew": "30-165",
+    "passengers": "600",
+    "max_atmosphering_speed": "950",
+    "hyperdrive_rating": "2.0",
+    "MGLT": "60",
+    "cargo_capacity": "3000000",
+    "consumables": "1 year",
+    "url": "https://swapi.dev/api/starships/2/",
+    "createdAt": "2023-08-28T14:07:44.036Z",
+    "updatedAt": "2023-08-28T14:07:44.036Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "pilots": [],
+    "photos": []
+  },
+  {
+    "starship_id": 2,
+    "name": "Star Destroyer",
+    "model": "Imperial I-class Star Destroyer",
+    "starship_class": "Star Destroyer",
+    "manufacturer": "Kuat Drive Yards",
+    "cost_in_credits": "150000000",
+    "length": "1,600",
+    "crew": "47,060",
+    "passengers": "n/a",
+    "max_atmosphering_speed": "975",
+    "hyperdrive_rating": "2.0",
+    "MGLT": "60",
+    "cargo_capacity": "36000000",
+    "consumables": "2 years",
+    "url": "https://swapi.dev/api/starships/3/",
+    "createdAt": "2023-08-28T14:07:44.178Z",
+    "updatedAt": "2023-08-28T14:07:44.178Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "pilots": [],
+    "photos": []
+  },
+  {
+    "starship_id": 3,
+    "name": "Sentinel-class landing craft",
+    "model": "Sentinel-class landing craft",
+    "starship_class": "landing craft",
+    "manufacturer": "Sienar Fleet Systems, Cyngus Spaceworks",
+    "cost_in_credits": "240000",
+    "length": "38",
+    "crew": "5",
+    "passengers": "75",
+    "max_atmosphering_speed": "1000",
+    "hyperdrive_rating": "1.0",
+    "MGLT": "70",
+    "cargo_capacity": "180000",
+    "consumables": "1 month",
+    "url": "https://swapi.dev/api/starships/5/",
+    "createdAt": "2023-08-28T14:07:44.316Z",
+    "updatedAt": "2023-08-28T14:07:44.316Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      }
+    ],
+    "pilots": [],
+    "photos": []
+  },
+  {
+    "starship_id": 4,
+    "name": "Death Star",
+    "model": "DS-1 Orbital Battle Station",
+    "starship_class": "Deep Space Mobile Battlestation",
+    "manufacturer": "Imperial Department of Military Research, Sienar Fleet Systems",
+    "cost_in_credits": "1000000000000",
+    "length": "120000",
+    "crew": "342,953",
+    "passengers": "843,342",
+    "max_atmosphering_speed": "n/a",
+    "hyperdrive_rating": "4.0",
+    "MGLT": "10",
+    "cargo_capacity": "1000000000000",
+    "consumables": "3 years",
+    "url": "https://swapi.dev/api/starships/9/",
+    "createdAt": "2023-08-28T14:07:44.433Z",
+    "updatedAt": "2023-08-28T14:07:44.433Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      }
+    ],
+    "pilots": [],
+    "photos": []
+  },
+  {
+    "starship_id": 5,
+    "name": "Millennium Falcon",
+    "model": "YT-1300 light freighter",
+    "starship_class": "Light freighter",
+    "manufacturer": "Corellian Engineering Corporation",
+    "cost_in_credits": "100000",
+    "length": "34.37",
+    "crew": "4",
+    "passengers": "6",
+    "max_atmosphering_speed": "1050",
+    "hyperdrive_rating": "0.5",
+    "MGLT": "75",
+    "cargo_capacity": "100000",
+    "consumables": "2 months",
+    "url": "https://swapi.dev/api/starships/10/",
+    "createdAt": "2023-08-28T14:07:44.576Z",
+    "updatedAt": "2023-08-28T14:07:44.576Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "pilots": [
+      {
+        "_id": 13,
+        "name": "Chewbacca"
+      },
+      {
+        "_id": 14,
+        "name": "Han Solo"
+      },
+      {
+        "_id": 24,
+        "name": "Lando Calrissian"
+      },
+      {
+        "_id": 30,
+        "name": "Nien Nunb"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "starship_id": 6,
+    "name": "Y-wing",
+    "model": "BTL Y-wing",
+    "starship_class": "assault starfighter",
+    "manufacturer": "Koensayr Manufacturing",
+    "cost_in_credits": "134999",
+    "length": "14",
+    "crew": "2",
+    "passengers": "0",
+    "max_atmosphering_speed": "1000km",
+    "hyperdrive_rating": "1.0",
+    "MGLT": "80",
+    "cargo_capacity": "110",
+    "consumables": "1 week",
+    "url": "https://swapi.dev/api/starships/11/",
+    "createdAt": "2023-08-28T14:07:44.779Z",
+    "updatedAt": "2023-08-28T14:07:44.779Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "pilots": [],
+    "photos": []
+  },
+  {
+    "starship_id": 7,
+    "name": "X-wing",
+    "model": "T-65 X-wing",
+    "starship_class": "Starfighter",
+    "manufacturer": "Incom Corporation",
+    "cost_in_credits": "149999",
+    "length": "12.5",
+    "crew": "1",
+    "passengers": "0",
+    "max_atmosphering_speed": "1050",
+    "hyperdrive_rating": "1.0",
+    "MGLT": "100",
+    "cargo_capacity": "110",
+    "consumables": "1 week",
+    "url": "https://swapi.dev/api/starships/12/",
+    "createdAt": "2023-08-28T14:07:44.930Z",
+    "updatedAt": "2023-08-28T14:07:44.930Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "pilots": [
+      {
+        "_id": 1,
+        "name": "Luke Skywalker"
+      },
+      {
+        "_id": 9,
+        "name": "Biggs Darklighter"
+      },
+      {
+        "_id": 17,
+        "name": "Wedge Antilles"
+      },
+      {
+        "_id": 18,
+        "name": "Jek Tono Porkins"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "starship_id": 8,
+    "name": "TIE Advanced x1",
+    "model": "Twin Ion Engine Advanced x1",
+    "starship_class": "Starfighter",
+    "manufacturer": "Sienar Fleet Systems",
+    "cost_in_credits": "unknown",
+    "length": "9.2",
+    "crew": "1",
+    "passengers": "0",
+    "max_atmosphering_speed": "1200",
+    "hyperdrive_rating": "1.0",
+    "MGLT": "105",
+    "cargo_capacity": "150",
+    "consumables": "5 days",
+    "url": "https://swapi.dev/api/starships/13/",
+    "createdAt": "2023-08-28T14:07:45.065Z",
+    "updatedAt": "2023-08-28T14:07:45.065Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      }
+    ],
+    "pilots": [
+      {
+        "_id": 4,
+        "name": "Darth Vader"
+      }
+    ],
+    "photos": []
+  },
+  {
+    "starship_id": 9,
+    "name": "Executor",
+    "model": "Executor-class star dreadnought",
+    "starship_class": "Star dreadnought",
+    "manufacturer": "Kuat Drive Yards, Fondor Shipyards",
+    "cost_in_credits": "1143350000",
+    "length": "19000",
+    "crew": "279,144",
+    "passengers": "38000",
+    "max_atmosphering_speed": "n/a",
+    "hyperdrive_rating": "2.0",
+    "MGLT": "40",
+    "cargo_capacity": "250000000",
+    "consumables": "6 years",
+    "url": "https://swapi.dev/api/starships/15/",
+    "createdAt": "2023-08-28T14:07:45.203Z",
+    "updatedAt": "2023-08-28T14:07:45.203Z",
+    "films": [
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "pilots": [],
+    "photos": []
+  },
+  {
+    "starship_id": 10,
+    "name": "Rebel transport",
+    "model": "GR-75 medium transport",
+    "starship_class": "Medium transport",
+    "manufacturer": "Gallofree Yards, Inc.",
+    "cost_in_credits": "unknown",
+    "length": "90",
+    "crew": "6",
+    "passengers": "90",
+    "max_atmosphering_speed": "650",
+    "hyperdrive_rating": "4.0",
+    "MGLT": "20",
+    "cargo_capacity": "19000000",
+    "consumables": "6 months",
+    "url": "https://swapi.dev/api/starships/17/",
+    "createdAt": "2023-08-28T14:07:45.343Z",
+    "updatedAt": "2023-08-28T14:07:45.343Z",
+    "films": [
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "pilots": [],
+    "photos": []
+  }
+]

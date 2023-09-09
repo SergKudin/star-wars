@@ -71,8 +71,6 @@ export class FilmsService {
 
   async updateFilm(id: string, updateFilmDto: UpdateFilmDto): Promise<Films> {
     const existFilmUrl: Films = await this.filmsRepository.findOne({ where: { film_id: id } });
-    // if (!existFilmUrl)
-    //   throw new NotFoundException(`Bad request! Check Your data: url ${updateFilmDto.url} not found`);
     if (existFilmUrl)
       throw new BadRequestException(`Bad request! Check Your data: found url ${existFilmUrl.url} with id: ${existFilmUrl.film_id}`);
 
@@ -103,13 +101,6 @@ export class FilmsService {
 
     // Save Film Objects Without Relationships    
     for (let dto of createFilmDto) {
-      // const existFilm: Films = await this.filmsRepository.findOne({ where: { url: dto.url } })
-      // if (existFilm)
-      //   throw new BadRequestException(`This Film: ${dto.title} with url: ${dto.url} already exists`)
-      // const { species, starships, vehicles, characters, planets, ...rest } = dto;
-
-      // const savedPerson: Films = await this.filmsRepository.save(rest);
-      // savedFilm.push(savedPerson);
       savedFilm.push(await this.createFilms(dto))
     }
     return savedFilm;
@@ -134,7 +125,6 @@ export class FilmsService {
 
   async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<Films>> {
     // limit - elements by page
-    // route = request.url
     const { countStr }: { countStr: string } = await this.filmsRepository
       .createQueryBuilder('films')
       .select('COUNT(film_id) AS countStr')

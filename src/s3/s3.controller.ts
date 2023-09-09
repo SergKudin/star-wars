@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Controller, Delete, Get, HttpStatus, Param, ParseFilePipeBuilder, Post, Res, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, ParseFilePipeBuilder, Post, Res, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { S3Service } from './s3.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';

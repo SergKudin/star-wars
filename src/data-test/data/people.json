@@ -1,0 +1,468 @@
+[
+  {
+    "_id": 1,
+    "name": "Luke Skywalker",
+    "birth_year": "19BBY",
+    "eye_color": "blue",
+    "gender": "male",
+    "hair_color": "blond",
+    "height": "172",
+    "mass": "77",
+    "skin_color": "fair",
+    "url": "https://swapi.dev/api/people/1/",
+    "createdAt": "2023-08-28T14:07:00.931Z",
+    "updatedAt": "2023-08-28T14:07:15.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 1,
+      "name": "Tatooine"
+    },
+    "species": [],
+    "starships": [
+      {
+        "starship_id": 7,
+        "name": "X-wing"
+      },
+      {
+        "starship_id": 12,
+        "name": "Imperial shuttle"
+      }
+    ],
+    "vehicles": [
+      {
+        "vehicle_id": 5,
+        "name": "Snowspeeder"
+      },
+      {
+        "vehicle_id": 13,
+        "name": "Imperial Speeder Bike"
+      }
+    ]
+  },
+  {
+    "_id": 2,
+    "name": "C-3PO",
+    "birth_year": "112BBY",
+    "eye_color": "yellow",
+    "gender": "n/a",
+    "hair_color": "n/a",
+    "height": "167",
+    "mass": "75",
+    "skin_color": "gold",
+    "url": "https://swapi.dev/api/people/2/",
+    "createdAt": "2023-08-28T14:07:01.224Z",
+    "updatedAt": "2023-08-28T14:07:15.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 1,
+      "name": "Tatooine"
+    },
+    "species": [
+      {
+        "species_id": 2,
+        "name": "Droid"
+      }
+    ],
+    "starships": [],
+    "vehicles": []
+  },
+  {
+    "_id": 3,
+    "name": "R2-D2",
+    "birth_year": "33BBY",
+    "eye_color": "red",
+    "gender": "n/a",
+    "hair_color": "n/a",
+    "height": "96",
+    "mass": "32",
+    "skin_color": "white, blue",
+    "url": "https://swapi.dev/api/people/3/",
+    "createdAt": "2023-08-28T14:07:01.404Z",
+    "updatedAt": "2023-08-28T14:07:16.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 8,
+      "name": "Naboo"
+    },
+    "species": [
+      {
+        "species_id": 2,
+        "name": "Droid"
+      }
+    ],
+    "starships": [],
+    "vehicles": []
+  },
+  {
+    "_id": 4,
+    "name": "Darth Vader",
+    "birth_year": "41.9BBY",
+    "eye_color": "yellow",
+    "gender": "male",
+    "hair_color": "none",
+    "height": "202",
+    "mass": "136",
+    "skin_color": "white",
+    "url": "https://swapi.dev/api/people/4/",
+    "createdAt": "2023-08-28T14:07:01.580Z",
+    "updatedAt": "2023-08-28T14:07:15.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 1,
+      "name": "Tatooine"
+    },
+    "species": [],
+    "starships": [
+      {
+        "starship_id": 8,
+        "name": "TIE Advanced x1"
+      }
+    ],
+    "vehicles": []
+  },
+  {
+    "_id": 5,
+    "name": "Leia Organa",
+    "birth_year": "19BBY",
+    "eye_color": "brown",
+    "gender": "female",
+    "hair_color": "brown",
+    "height": "150",
+    "mass": "49",
+    "skin_color": "light",
+    "url": "https://swapi.dev/api/people/5/",
+    "createdAt": "2023-08-28T14:07:01.737Z",
+    "updatedAt": "2023-08-28T14:07:16.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 2,
+      "name": "Alderaan"
+    },
+    "species": [],
+    "starships": [],
+    "vehicles": [
+      {
+        "vehicle_id": 13,
+        "name": "Imperial Speeder Bike"
+      }
+    ]
+  },
+  {
+    "_id": 6,
+    "name": "Owen Lars",
+    "birth_year": "52BBY",
+    "eye_color": "blue",
+    "gender": "male",
+    "hair_color": "brown, grey",
+    "height": "178",
+    "mass": "120",
+    "skin_color": "light",
+    "url": "https://swapi.dev/api/people/6/",
+    "createdAt": "2023-08-28T14:07:01.947Z",
+    "updatedAt": "2023-08-28T14:07:15.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 1,
+      "name": "Tatooine"
+    },
+    "species": [],
+    "starships": [],
+    "vehicles": []
+  },
+  {
+    "_id": 7,
+    "name": "Beru Whitesun lars",
+    "birth_year": "47BBY",
+    "eye_color": "blue",
+    "gender": "female",
+    "hair_color": "brown",
+    "height": "165",
+    "mass": "75",
+    "skin_color": "light",
+    "url": "https://swapi.dev/api/people/7/",
+    "createdAt": "2023-08-28T14:07:02.128Z",
+    "updatedAt": "2023-08-28T14:07:15.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 1,
+      "name": "Tatooine"
+    },
+    "species": [],
+    "starships": [],
+    "vehicles": []
+  },
+  {
+    "_id": 8,
+    "name": "R5-D4",
+    "birth_year": "unknown",
+    "eye_color": "red",
+    "gender": "n/a",
+    "hair_color": "n/a",
+    "height": "97",
+    "mass": "32",
+    "skin_color": "white, red",
+    "url": "https://swapi.dev/api/people/8/",
+    "createdAt": "2023-08-28T14:07:02.729Z",
+    "updatedAt": "2023-08-28T14:07:15.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 1,
+      "name": "Tatooine"
+    },
+    "species": [
+      {
+        "species_id": 2,
+        "name": "Droid"
+      }
+    ],
+    "starships": [],
+    "vehicles": []
+  },
+  {
+    "_id": 9,
+    "name": "Biggs Darklighter",
+    "birth_year": "24BBY",
+    "eye_color": "brown",
+    "gender": "male",
+    "hair_color": "black",
+    "height": "183",
+    "mass": "84",
+    "skin_color": "light",
+    "url": "https://swapi.dev/api/people/9/",
+    "createdAt": "2023-08-28T14:07:02.894Z",
+    "updatedAt": "2023-08-28T14:07:15.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 1,
+      "name": "Tatooine"
+    },
+    "species": [],
+    "starships": [
+      {
+        "starship_id": 7,
+        "name": "X-wing"
+      }
+    ],
+    "vehicles": []
+  },
+  {
+    "_id": 10,
+    "name": "Obi-Wan Kenobi",
+    "birth_year": "57BBY",
+    "eye_color": "blue-gray",
+    "gender": "male",
+    "hair_color": "auburn, white",
+    "height": "182",
+    "mass": "77",
+    "skin_color": "fair",
+    "url": "https://swapi.dev/api/people/10/",
+    "createdAt": "2023-08-28T14:07:03.118Z",
+    "updatedAt": "2023-08-28T14:07:18.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 20,
+      "name": "Stewjon"
+    },
+    "species": [],
+    "starships": [
+      {
+        "starship_id": 24,
+        "name": "Jedi starfighter"
+      },
+      {
+        "starship_id": 28,
+        "name": "Trade Federation cruiser"
+      },
+      {
+        "starship_id": 31,
+        "name": "Naboo star skiff"
+      },
+      {
+        "starship_id": 32,
+        "name": "Jedi Interceptor"
+      },
+      {
+        "starship_id": 35,
+        "name": "Belbullab-22 starfighter"
+      }
+    ],
+    "vehicles": [
+      {
+        "vehicle_id": 19,
+        "name": "Tribubble bongo"
+      }
+    ]
+  }
+]

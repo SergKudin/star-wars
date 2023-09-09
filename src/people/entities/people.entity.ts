@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsArray, IsNumber, IsString } from "class-validator"
+import { IsArray, IsString } from "class-validator"
 import { Films } from "src/films/entities/film.entity"
 import { Photo } from "src/photo/entities/photo.entity"
 import { Planet } from "src/planets/entities/planet.entity"
@@ -88,7 +88,7 @@ export class People {
   @IsArray()
   vehicles: Vehicles[]
 
-  @Column() // @Column({nullable: true})
+  @Column()
   @ApiProperty({ description: 'The URL of this resource', nullable: true })
   @IsString()
   url: string;

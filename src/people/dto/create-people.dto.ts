@@ -31,43 +31,35 @@ export class CreatePeopleDto {
   name: string
 
   @ApiProperty({ description: descr.height, nullable: true })
-  // @IsNumber()
   @IsString()
   height: string
 
   @ApiProperty({ description: descr.mass, nullable: true })
-  // @Transform((value) => (value ? value : 0), { toClassOnly: true })
   @IsString()
   mass: string
 
   @ApiProperty({ description: descr.hair_color, nullable: true })
   @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   hair_color: string
 
   @ApiProperty({ description: descr.skin_color, nullable: true })
   @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   skin_color: string
 
   @ApiProperty({ description: descr.eye_color, nullable: true })
   @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   eye_color: string
 
   @ApiProperty({ description: descr.birth_year, nullable: true })
   @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   birth_year: string
 
   @ApiProperty({ description: descr.gender, nullable: true })
   @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   gender: string
 
   @ApiProperty({ description: descr.homeworld, nullable: true })
   @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
   homeworld: string
 
   @ApiProperty({ description: descr.films, nullable: true })
@@ -90,15 +82,13 @@ export class CreatePeopleDto {
   @IsString({ each: true })
   starships: string[]
 
-  @ApiProperty({ description: descr.created, nullable: true })
-  @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
-  created: string
+  // @ApiProperty({ description: descr.created, nullable: true })
+  // @IsString()
+  // created: string
 
-  @ApiProperty({ description: descr.edited, nullable: true })
-  @IsString()
-  // @Transform((value) => (value ? value : ''), { toClassOnly: true })
-  edited: string
+  // @ApiProperty({ description: descr.edited, nullable: true })
+  // @IsString()
+  // edited: string
 
   @ApiProperty({ description: descr.url, nullable: true })
   @IsString()

@@ -1,0 +1,419 @@
+[
+  {
+    "species_id": 1,
+    "name": "Human",
+    "classification": "mammal",
+    "designation": "sentient",
+    "average_height": "180",
+    "average_lifespan": "120",
+    "eye_colors": "brown, blue, green, hazel, grey, amber",
+    "hair_colors": "blonde, brown, black, red",
+    "skin_colors": "caucasian, black, asian, hispanic",
+    "language": "Galactic Basic",
+    "url": "https://swapi.dev/api/species/1/",
+    "createdAt": "2023-08-28T14:07:25.269Z",
+    "updatedAt": "2023-08-28T14:07:25.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "people": [
+      {
+        "_id": 65,
+        "name": "Dormé"
+      },
+      {
+        "_id": 66,
+        "name": "Dooku"
+      },
+      {
+        "_id": 67,
+        "name": "Bail Prestor Organa"
+      },
+      {
+        "_id": 73,
+        "name": "Jocasta Nu"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 9,
+      "name": "Coruscant"
+    }
+  },
+  {
+    "species_id": 2,
+    "name": "Droid",
+    "classification": "artificial",
+    "designation": "sentient",
+    "average_height": "n/a",
+    "average_lifespan": "indefinite",
+    "eye_colors": "n/a",
+    "hair_colors": "n/a",
+    "skin_colors": "n/a",
+    "language": "n/a",
+    "url": "https://swapi.dev/api/species/2/",
+    "createdAt": "2023-08-28T14:07:25.473Z",
+    "updatedAt": "2023-08-28T14:07:25.473Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "people": [
+      {
+        "_id": 2,
+        "name": "C-3PO"
+      },
+      {
+        "_id": 3,
+        "name": "R2-D2"
+      },
+      {
+        "_id": 8,
+        "name": "R5-D4"
+      },
+      {
+        "_id": 22,
+        "name": "IG-88"
+      }
+    ],
+    "photos": [],
+    "homeworld": null
+  },
+  {
+    "species_id": 3,
+    "name": "Wookie",
+    "classification": "mammal",
+    "designation": "sentient",
+    "average_height": "210",
+    "average_lifespan": "400",
+    "eye_colors": "blue, green, yellow, brown, golden, red",
+    "hair_colors": "black, brown",
+    "skin_colors": "gray",
+    "language": "Shyriiwook",
+    "url": "https://swapi.dev/api/species/3/",
+    "createdAt": "2023-08-28T14:07:25.665Z",
+    "updatedAt": "2023-08-28T14:07:25.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "people": [
+      {
+        "_id": 13,
+        "name": "Chewbacca"
+      },
+      {
+        "_id": 79,
+        "name": "Tarfful"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 14,
+      "name": "Kashyyyk"
+    }
+  },
+  {
+    "species_id": 4,
+    "name": "Rodian",
+    "classification": "sentient",
+    "designation": "reptilian",
+    "average_height": "170",
+    "average_lifespan": "unknown",
+    "eye_colors": "black",
+    "hair_colors": "n/a",
+    "skin_colors": "green, blue",
+    "language": "Galatic Basic",
+    "url": "https://swapi.dev/api/species/4/",
+    "createdAt": "2023-08-28T14:07:25.967Z",
+    "updatedAt": "2023-08-28T14:07:26.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      }
+    ],
+    "people": [
+      {
+        "_id": 15,
+        "name": "Greedo"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 23,
+      "name": "Rodia"
+    }
+  },
+  {
+    "species_id": 5,
+    "name": "Hutt",
+    "classification": "gastropod",
+    "designation": "sentient",
+    "average_height": "300",
+    "average_lifespan": "1000",
+    "eye_colors": "yellow, red",
+    "hair_colors": "n/a",
+    "skin_colors": "green, brown, tan",
+    "language": "Huttese",
+    "url": "https://swapi.dev/api/species/5/",
+    "createdAt": "2023-08-28T14:07:26.129Z",
+    "updatedAt": "2023-08-28T14:07:26.000Z",
+    "films": [
+      {
+        "film_id": 1,
+        "title": "A New Hope"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "people": [
+      {
+        "_id": 16,
+        "name": "Jabba Desilijic Tiure"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 24,
+      "name": "Nal Hutta"
+    }
+  },
+  {
+    "species_id": 6,
+    "name": "Yoda's species",
+    "classification": "mammal",
+    "designation": "sentient",
+    "average_height": "66",
+    "average_lifespan": "900",
+    "eye_colors": "brown, green, yellow",
+    "hair_colors": "brown, white",
+    "skin_colors": "green, yellow",
+    "language": "Galactic basic",
+    "url": "https://swapi.dev/api/species/6/",
+    "createdAt": "2023-08-28T14:07:26.313Z",
+    "updatedAt": "2023-08-28T14:07:26.000Z",
+    "films": [
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      },
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      },
+      {
+        "film_id": 4,
+        "title": "The Phantom Menace"
+      },
+      {
+        "film_id": 5,
+        "title": "Attack of the Clones"
+      },
+      {
+        "film_id": 6,
+        "title": "Revenge of the Sith"
+      }
+    ],
+    "people": [
+      {
+        "_id": 19,
+        "name": "Yoda"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 28,
+      "name": "unknown"
+    }
+  },
+  {
+    "species_id": 7,
+    "name": "Trandoshan",
+    "classification": "reptile",
+    "designation": "sentient",
+    "average_height": "200",
+    "average_lifespan": "unknown",
+    "eye_colors": "yellow, orange",
+    "hair_colors": "none",
+    "skin_colors": "brown, green",
+    "language": "Dosh",
+    "url": "https://swapi.dev/api/species/7/",
+    "createdAt": "2023-08-28T14:07:26.498Z",
+    "updatedAt": "2023-08-28T14:07:26.000Z",
+    "films": [
+      {
+        "film_id": 2,
+        "title": "The Empire Strikes Back"
+      }
+    ],
+    "people": [
+      {
+        "_id": 23,
+        "name": "Bossk"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 29,
+      "name": "Trandosha"
+    }
+  },
+  {
+    "species_id": 8,
+    "name": "Mon Calamari",
+    "classification": "amphibian",
+    "designation": "sentient",
+    "average_height": "160",
+    "average_lifespan": "unknown",
+    "eye_colors": "yellow",
+    "hair_colors": "none",
+    "skin_colors": "red, blue, brown, magenta",
+    "language": "Mon Calamarian",
+    "url": "https://swapi.dev/api/species/8/",
+    "createdAt": "2023-08-28T14:07:26.665Z",
+    "updatedAt": "2023-08-28T14:07:26.000Z",
+    "films": [
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "people": [
+      {
+        "_id": 26,
+        "name": "Ackbar"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 31,
+      "name": "Mon Cala"
+    }
+  },
+  {
+    "species_id": 9,
+    "name": "Ewok",
+    "classification": "mammal",
+    "designation": "sentient",
+    "average_height": "100",
+    "average_lifespan": "unknown",
+    "eye_colors": "orange, brown",
+    "hair_colors": "white, brown, black",
+    "skin_colors": "brown",
+    "language": "Ewokese",
+    "url": "https://swapi.dev/api/species/9/",
+    "createdAt": "2023-08-28T14:07:26.828Z",
+    "updatedAt": "2023-08-28T14:07:26.000Z",
+    "films": [
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "people": [
+      {
+        "_id": 29,
+        "name": "Wicket Systri Warrick"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 7,
+      "name": "Endor"
+    }
+  },
+  {
+    "species_id": 10,
+    "name": "Sullustan",
+    "classification": "mammal",
+    "designation": "sentient",
+    "average_height": "180",
+    "average_lifespan": "unknown",
+    "eye_colors": "black",
+    "hair_colors": "none",
+    "skin_colors": "pale",
+    "language": "Sullutese",
+    "url": "https://swapi.dev/api/species/10/",
+    "createdAt": "2023-08-28T14:07:27.013Z",
+    "updatedAt": "2023-08-28T14:07:27.000Z",
+    "films": [
+      {
+        "film_id": 3,
+        "title": "Return of the Jedi"
+      }
+    ],
+    "people": [
+      {
+        "_id": 30,
+        "name": "Nien Nunb"
+      }
+    ],
+    "photos": [],
+    "homeworld": {
+      "planet_id": 33,
+      "name": "Sullust"
+    }
+  }
+]

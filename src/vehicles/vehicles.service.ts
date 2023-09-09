@@ -1,14 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, In, IsNull, Not, Repository, UpdateResult } from 'typeorm';
+
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { Vehicles } from './entities/vehicle.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, In, IsNull, Not, Repository, UpdateResult } from 'typeorm';
 import { Films } from 'src/films/entities/film.entity';
 import { People } from 'src/people/entities/people.entity';
-import { Planet } from 'src/planets/entities/planet.entity';
-import { Species } from 'src/species/entities/species.entity';
-import { Starships } from 'src/starships/entities/starship.entity';
 import { SwapiResponse } from 'src/types/swapi-response.type';
 
 @Injectable()
@@ -16,16 +14,16 @@ export class VehiclesService {
   constructor(
     @InjectRepository(People)
     private readonly peopleRepository: Repository<People>,
-    @InjectRepository(Planet)
-    private readonly planetRepository: Repository<Planet>,
+    // @InjectRepository(Planet)
+    // private readonly planetRepository: Repository<Planet>,
     @InjectRepository(Films)
     private readonly filmsRepository: Repository<Films>,
-    @InjectRepository(Species)
-    private readonly speciesRepository: Repository<Species>,
+    // @InjectRepository(Species)
+    // private readonly speciesRepository: Repository<Species>,
     @InjectRepository(Vehicles)
     private readonly vehiclesRepository: Repository<Vehicles>,
-    @InjectRepository(Starships)
-    private readonly starshipsRepository: Repository<Starships>,
+    // @InjectRepository(Starships)
+    // private readonly starshipsRepository: Repository<Starships>,
   ) { }
 
   query = {
@@ -40,8 +38,6 @@ export class VehiclesService {
       crew: true,
       passengers: true,
       max_atmosphering_speed: true,
-      // hyperdrive_rating: true,
-      // MGLT: true,
       cargo_capacity: true,
       consumables: true,
       url: true,
@@ -80,18 +76,11 @@ export class VehiclesService {
   async saveVehicleWithLinks(VehicleData: CreateVehicleDto | UpdateVehicleDto): Promise<Vehicles> {
     const { films, pilots, ...rest } = VehicleData;
 
-    // Save the Vehicle object with no links    
-    const savedVehicle = await this.vehiclesRepository.save(rest);
+    const savedVehicle: Vehicles = await this.vehiclesRepository.save(rest);
 
-    // Get instances of related objects from repositories & Establish links between objects    
-    // if (homeworld) savedVehicle.homeworld = await this.planetRepository.findOne({ where: { url: homeworld } });
     if (films) savedVehicle.films = await this.filmsRepository.find({ where: { url: In(films) } });
     if (pilots) savedVehicle.pilots = await this.peopleRepository.find({ where: { url: In(pilots) } });
-    // if (species) savedVehicle.species = await this.speciesRepository.find({ where: { url: In(species) } });
-    // if (starships) savedVehicle.starships = await this.starshipsRepository.find({ where: { url: In(starships) } });
-    // if (vehicles) savedVehicle.vehicles = await this.vehiclesRepository.find({ where: { url: In(vehicles) } });
 
-    // Save the updated Vehicle object with the relationships set    
     return this.vehiclesRepository.save(savedVehicle);
   }
 
@@ -99,15 +88,8 @@ export class VehiclesService {
 
     const savedVehicles: Vehicles[] = [];
 
-    // Save Vehicle Objects Without Relationships    
     for (let dto of createVehicleDto) {
-      // const existVehicle: Vehicles = await this.vehiclesRepository.findOne({ where: { url: dto.url } })
-      // if (existVehicle)
-      //   throw new BadRequestException(`This Vehicle: ${dto.name} with url: ${dto.url} already exists`)
-      // const { films, pilots, ...rest } = dto;
 
-      // const savedVehicle: Vehicles = await this.vehiclesRepository.save(rest);
-      // savedVehicles.push(savedVehicle);
       savedVehicles.push(await this.createVehicle(dto))
     }
     return savedVehicles;
@@ -132,7 +114,6 @@ export class VehiclesService {
 
   async getAllWithPagination(route: string, page: number, pageLimit: number): Promise<SwapiResponse<Vehicles>> {
     // limit - elements by page
-    // route = request.url
     const { countStr }: { countStr: string } = await this.vehiclesRepository
       .createQueryBuilder('vehicles')
       .select('COUNT(vehicle_id) AS countStr')

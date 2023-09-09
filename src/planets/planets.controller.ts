@@ -7,7 +7,6 @@ import { Planet } from './entities/planet.entity';
 import { DataInterceptor } from 'src/interceptors/data.interceptor';
 import { SwapiResponse } from 'src/types/swapi-response.type';
 import { ResultInterceptor } from 'src/interceptors/result.interceptor';
-import { DeleteResult } from 'typeorm';
 import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @ApiTags('Planets')

@@ -3,7 +3,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Req, Use
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { createReadStream } from 'fs';
 
 import { PhotoService } from './photo.service';
 import { UpdatePhotoDto } from './dto/update-photo.dto';
