@@ -171,3 +171,4 @@ To begin working with the project, follow these steps:
    ```
 
 6. Continue exploring the API's functionality on the documentation page.
+7. There is a particular feature when working with photos. To create a new entry, you first need to upload an image. In case of successful upload, the system will return the created record with an ID number, which can then be supplemented with additional information as needed. 
